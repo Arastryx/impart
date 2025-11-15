@@ -11,7 +11,7 @@ import { setupTagApi } from './api/tagApi'
 import { setupIndexApi } from './api/indexApi'
 import { setupStackApi } from './api/stackApi'
 import { ThumbnailManager } from './indexables/thumbnailManager'
-// import { store } from './config'
+import { store } from './config'
 import { autoUpdater } from 'electron-updater'
 import electronLog from 'electron-log'
 
@@ -29,10 +29,10 @@ export const impartApp: ImpartApp = {}
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    // width: store.get('window.width') ?? 1700,
-    // height: store.get('window.height') ?? 1000,
-    // x: store.get('window.x'),
-    // y: store.get('window.y'),
+    width: store.get('window.width') ?? 1700,
+    height: store.get('window.height') ?? 1000,
+    x: store.get('window.x'),
+    y: store.get('window.y'),
     show: false,
     autoHideMenuBar: true,
     icon,
@@ -44,9 +44,9 @@ function createWindow(): void {
 
   mainWindow.removeMenu()
 
-  // if (store.get('window.maximized')) {
-  //   mainWindow.maximize()
-  // }
+  if (store.get('window.maximized')) {
+    mainWindow.maximize()
+  }
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     // open url in a browser and prevent default
@@ -60,15 +60,15 @@ function createWindow(): void {
 
   mainWindow.on('close', () => {
     const bounds = mainWindow.getBounds()
-    // store.set('window.x', bounds.x)
-    // store.set('window.y', bounds.y)
+    store.set('window.x', bounds.x)
+    store.set('window.y', bounds.y)
 
-    // if (!mainWindow.isMaximized()) {
-    //   store.set('window.width', bounds.width)
-    //   store.set('window.height', bounds.height)
-    // }
+    if (!mainWindow.isMaximized()) {
+      store.set('window.width', bounds.width)
+      store.set('window.height', bounds.height)
+    }
 
-    // store.set('window.maximized', mainWindow.isMaximized())
+    store.set('window.maximized', mainWindow.isMaximized())
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {

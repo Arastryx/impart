@@ -17,8 +17,8 @@ const schema: Schema<Config> = {
   'window.maximized': {}
 }
 
-// export const store = new Store({
-//   accessPropertiesByDotNotation: true,
-//   schema,
-//   name: app.isPackaged ? undefined : 'config-dev'
-// })
+export const store = new Store({
+  accessPropertiesByDotNotation: true,
+  schema,
+  name: app.isPackaged ? undefined : 'config-dev'
+})
