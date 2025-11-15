@@ -6,7 +6,7 @@ import { useImpartIpcCall } from '../../Hooks/useImpartIpc'
 import { useTaggables } from '@renderer/EntityProviders/TaggableProvider'
 import { useTaggableSelection } from '@renderer/TaggableSelectionProvider'
 import { useConfirmationDialog } from '../ConfirmationDialogProvider'
-import { isTaggableFile, isTaggableImage } from '@renderer/Common/taggable'
+import { isTaggableFile, isTaggableImage } from '@renderer/common/taggable'
 import { Box, Typography } from '@mui/material'
 
 function inOrEqual(item: string, target: string | string[]) {

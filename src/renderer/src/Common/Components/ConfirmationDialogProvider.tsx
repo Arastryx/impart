@@ -76,7 +76,7 @@ export interface ConfirmationDialogProviderProps {
 export function ConfirmationDialogProvider({ children }: ConfirmationDialogProviderProps) {
   const [show, setShow] = useState(false)
   const [props, setProps] = useState<ConfirmProps>()
-  const funcRef = useRef<() => unknown | Promise<unknown>>()
+  const funcRef = useRef<() => unknown | Promise<unknown>>(() => {})
 
   const confirm = useCallback((p: ConfirmProps, onConfirm: () => unknown | Promise<unknown>) => {
     if (show) {

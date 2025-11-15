@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Grid2 as Grid, Stack, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Grid, Stack, Typography } from '@mui/material'
 import { useState } from 'react'
 import { TagSelector } from './Common/Components/TagSelector'
 import { Tag } from './Common/Components/Tag/Tag'

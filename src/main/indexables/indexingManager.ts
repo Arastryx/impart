@@ -7,7 +7,7 @@ import { TaggableFile, isTaggableFile } from '../database/entities/TaggableFile'
 import { Taggable } from '../database/entities/Taggable'
 import { IsNull, Like } from 'typeorm'
 import { Directory } from '../database/entities/Directory'
-import { imageSize } from 'image-size'
+import { imageSizeFromFile } from 'image-size/fromFile'
 import { taskQueue } from '../task/taskQueue'
 import dayjs from 'dayjs'
 import { ImpartTask, TaskType } from '../task/impartTask'
@@ -50,13 +50,16 @@ export namespace IndexingManager {
       return
     }
 
+    const dirsep = process.platform === 'linux' ? '/' : '\\'
     const dirents = await readdir(directory.path, {
       withFileTypes: true,
       recursive: directory.recursive
     })
     const files = dirents
       .filter((dirent) => dirent.isFile())
-      .map((dirent) => (dirent.parentPath + '\\' + dirent.name).replace(directory.path + '\\', ''))
+      .map((dirent) =>
+        (dirent.parentPath + dirsep + dirent.name).replace(directory.path + dirsep, '')
+      )
 
     const indexedTaggables = await getAllIndexedFilesInDirectory(directory)
 
@@ -101,14 +104,21 @@ export namespace IndexingManager {
   type FilePath = { dir: string; name: string } | string
 
   function isSameFile(first: FilePath, second: FilePath) {
-    const firstNormalized = (
-      typeof first === 'string' ? first : `${first.dir}\\${first.name}`
-    ).replace('/', '\\')
-    const secondNormalized = (
-      typeof second === 'string' ? second : `${second.dir}\\${second.name}`
-    ).replace('/', '\\')
+    if (process.platform === 'linux') {
+      const firstNormalized = typeof first === 'string' ? first : `${first.dir}/${first.name}`
+      const secondNormalized = typeof second === 'string' ? second : `${second.dir}/${second.name}`
 
-    return firstNormalized === secondNormalized
+      return firstNormalized === secondNormalized
+    } else {
+      const firstNormalized = (
+        typeof first === 'string' ? first : `${first.dir}\\${first.name}`
+      ).replace('/', '\\')
+      const secondNormalized = (
+        typeof second === 'string' ? second : `${second.dir}\\${second.name}`
+      ).replace('/', '\\')
+
+      return firstNormalized === secondNormalized
+    }
   }
 
   async function getAllIndexedFilesInDirectory(directory: Directory) {
@@ -144,14 +154,19 @@ export namespace IndexingManager {
 
   async function indexImage(filePath: string, directory: Directory) {
     console.log('Indexing Image: ', filePath)
+    const [size, stats] = await Promise.all([
+      await imageSizeFromFile(filePath),
+      await stat(filePath)
+    ])
+
     const indexedImage = TaggableImage.create({
       fileIndex: {
         path: filePath,
         fileName: path.basename(filePath)
       },
       directory,
-      dimensions: imageSize(filePath),
-      dateModified: (await stat(filePath)).mtime
+      dimensions: { width: size.width, height: size.height },
+      dateModified: stats.mtime
     })
 
     await indexedImage.save()

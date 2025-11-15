@@ -15,7 +15,7 @@ import CheckIcon from '@mui/icons-material/CheckRounded'
 import { useImpartIpcCall, useImpartIpcData } from './Common/Hooks/useImpartIpc'
 import { ImageDisplay } from './Common/Components/TaggableDisplay/ImageDisplay'
 import { TaggableDisplay } from './Common/Components/TaggableDisplay'
-import { isTaggableFile } from './Common/taggable'
+import { isTaggableFile } from './common/taggable'
 import { SearchBar } from './Common/Components/SearchBar'
 
 export interface AssociateWithSourceProps {

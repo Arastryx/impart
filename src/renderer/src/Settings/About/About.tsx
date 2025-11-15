@@ -3,7 +3,7 @@ import React from 'react'
 import arastryxIcon from './arastryxIcon.jpg'
 import XIcon from '@mui/icons-material/X'
 import bsky from './blueskyLogo.png'
-import GithubIcon from '@mui/icons-material/Github'
+import GithubIcon from '@mui/icons-material/GitHub'
 
 const HoverLink = styled('a')({
   transition: '0.2s',

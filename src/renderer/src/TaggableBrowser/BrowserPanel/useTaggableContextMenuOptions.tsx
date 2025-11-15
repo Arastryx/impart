@@ -3,7 +3,6 @@ import FileOpenIcon from '@mui/icons-material/FileOpenRounded'
 import FolderIcon from '@mui/icons-material/FolderRounded'
 import TagIcon from '@mui/icons-material/LocalOfferRounded'
 import BrushIcon from '@mui/icons-material/BrushRounded'
-import { isTaggableImage, isTaggableStack } from '@renderer/Common/taggable'
 import BookmarksIcon from '@mui/icons-material/BookmarksRounded'
 import BurstModeIcon from '@mui/icons-material/BurstModeRounded'
 import HideImageIcon from '@mui/icons-material/HideImageRounded'
@@ -14,6 +13,7 @@ import { useTaggables } from '@renderer/EntityProviders/TaggableProvider'
 import CancelIcon from '@mui/icons-material/CancelRounded'
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutlineRounded'
 import AddLinkIcon from '@mui/icons-material/AddLinkRounded'
+import { isTaggableImage, isTaggableStack } from '@renderer/common/taggable'
 
 export interface TaggableGridEvents {
   onAssociateWithSource?: (taggables: Impart.TaggableImage[]) => void

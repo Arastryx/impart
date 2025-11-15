@@ -11,7 +11,7 @@ import { ImpartDragAndDropProvider } from './Common/Components/DragAndDrop/Impar
 import { useHotkeys } from 'react-hotkeys-hook'
 import { TaggableSelectionProvider } from './TaggableSelectionProvider'
 import { AssociateWithSource } from './AssociateWithSource'
-import { isTaggableImage } from './Common/taggable'
+import { isTaggableImage } from './common/taggable'
 
 type ImpartModal = 'bulkTag' | 'settings' | 'createStack' | 'associateSource'
 
