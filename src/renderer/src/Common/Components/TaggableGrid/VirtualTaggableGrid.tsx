@@ -1,4 +1,4 @@
-import { darken, Grid2 as Grid, Skeleton, Stack, Typography } from '@mui/material'
+import { darken, Grid, Skeleton, Stack, Typography } from '@mui/material'
 import { forwardRef, useEffect, useState } from 'react'
 import { GridComponents, VirtuosoGrid } from 'react-virtuoso'
 import { BOX_HEIGHT, BOX_WIDTH } from '../TaggableDisplay/TaggableDisplay'

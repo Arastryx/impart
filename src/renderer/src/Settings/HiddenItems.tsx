@@ -8,7 +8,7 @@ import {
   darken,
   styled
 } from '@mui/material'
-import { isTaggableStack } from '@renderer/Common/taggable'
+import { isTaggableStack } from '@renderer/common/taggable'
 import { useImpartIpcCall, useImpartIpcData } from '@renderer/Common/Hooks/useImpartIpc'
 import { useMultiSelection } from '@renderer/Common/Hooks/useMultiSelection'
 import React, { useState } from 'react'

@@ -36,13 +36,16 @@ export namespace ThumbnailManager {
   }
 
   async function buildThumbnail(image: TaggableImage) {
-    const thumb = await nativeImage.createThumbnailFromPath(
-      image.fileIndex.path.replaceAll('/', '\\').replaceAll('%20', ' '),
-      {
-        width: 400,
-        height: 400
-      }
-    )
+    const thumb =
+      process.platform === 'linux'
+        ? await nativeImage.createFromPath(image.fileIndex.path).resize({ width: 400 })
+        : await nativeImage.createThumbnailFromPath(
+            image.fileIndex.path.replaceAll('/', '\\').replaceAll('%20', ' '),
+            {
+              width: 400,
+              height: 400
+            }
+          )
 
     const thumbnailPath = `${app.getPath('appData')}/impart/${app.isPackaged ? APP_DIR : DEV_DIR}/thumbnails`
 

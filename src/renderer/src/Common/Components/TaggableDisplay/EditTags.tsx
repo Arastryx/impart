@@ -1,4 +1,4 @@
-import { Stack, Typography, Grid2 } from '@mui/material'
+import { Stack, Typography, Grid } from '@mui/material'
 import { Tag } from '../Tag/Tag'
 
 export interface EditTagsProps {
@@ -13,13 +13,13 @@ export function EditTags({ tags, removeTag }: EditTagsProps) {
         Tags
       </Typography>
       {tags.length > 0 && (
-        <Grid2 container maxWidth={360} spacing={1} justifyContent={'center'}>
+        <Grid container maxWidth={360} spacing={1} justifyContent={'center'}>
           {tags.map((t) => (
-            <Grid2 key={t.id}>
+            <Grid key={t.id}>
               <Tag tag={t} onSelect={() => removeTag && removeTag(t)} />
-            </Grid2>
+            </Grid>
           ))}
-        </Grid2>
+        </Grid>
       )}
       {tags.length == 0 && (
         <Typography color="text.secondary" textAlign="center" fontStyle="italic" variant="body2">

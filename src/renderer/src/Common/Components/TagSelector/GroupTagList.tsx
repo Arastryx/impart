@@ -1,4 +1,4 @@
-import { Box, BoxProps, Grid2 as Grid, IconButton, Stack, styled } from '@mui/material'
+import { Box, BoxProps, Grid, IconButton, Stack, styled } from '@mui/material'
 import { group } from 'console'
 import React from 'react'
 import { Draggable } from '../DragAndDrop'
