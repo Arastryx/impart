@@ -97,11 +97,18 @@ export namespace TagManager {
     return tag
   }
 
-  export async function editTag(tagId: number, label?: string, color?: string) {
+  interface TagModel {
+    label?: string
+    color?: string
+    isNsfw: boolean
+  }
+
+  export async function editTag(tagId: number, { label, color, isNsfw }: TagModel) {
     const tagEntity = await Tag.findOneByOrFail({ id: tagId })
 
     tagEntity.label = label
     tagEntity.color = color
+    tagEntity.isNsfw = isNsfw
 
     await tagEntity.save()
 

@@ -63,6 +63,7 @@ declare global {
       stackId?: number
       onlyHidden?: boolean
       onlyFiles?: boolean
+      allowNsfw?: boolean
     }
 
     //~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
@@ -74,6 +75,13 @@ declare global {
       label?: string
       tagOrder: number
       color?: string
+      isNsfw: boolean
+    }
+
+    interface TagModel {
+      label?: string
+      color?: string
+      isNsfw: boolean
     }
 
     interface TagGroup {
@@ -148,7 +156,7 @@ declare global {
       deleteGroup: (id: number) => Result<true>
 
       createTag: (groupId: number) => Result<Impart.Tag>
-      editTag: (tagId: number, label?: string, color?: string) => Result<Impart.Tag>
+      editTag: (tagId: number, model: Impart.TagModel) => Result<Impart.Tag>
       reorderTags: (moveId: number, toGroupId: number, beforeTagId: number | 'end') => Result<void>
       deleteTag: (id: number) => Result<true>
     }

@@ -1,21 +1,9 @@
-import {
-  Box,
-  BoxProps,
-  ClickAwayListener,
-  Divider,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  MenuList,
-  Paper,
-  PopoverVirtualElement,
-  Typography
-} from '@mui/material'
-import React, { useId, useState } from 'react'
+import { Box, BoxProps, ClickAwayListener, Paper, PopoverVirtualElement } from '@mui/material'
+import React from 'react'
 import { useContextMenu } from './useContextMenu'
 import { BetterPopper } from '../BetterPopper'
-import { v4 } from 'uuid'
 import { useHotkeys } from 'react-hotkeys-hook'
+import { ContextMenuList } from './ContextMenuList'
 
 export interface ContextMenuOption {
   label: React.ReactNode
@@ -26,6 +14,7 @@ export interface ContextMenuOption {
   danger?: boolean
   onClick?: () => void
   bold?: boolean
+  isChecked?: boolean
 }
 
 export interface ContextMenuRenderProps {
@@ -82,64 +71,7 @@ export function ContextMenu({ options, render, disabled, ...boxProps }: ContextM
       >
         <ClickAwayListener onClickAway={() => closeMenu()}>
           <Paper>
-            <MenuList
-              sx={{
-                '& .MuiPaper-root': { minWidth: 200 },
-                '& .MuiMenuItem-root+.MuiDivider-root': { marginY: 0.5 }
-              }}
-              dense
-            >
-              {options
-                ?.filter((o) => o === 'divider' || !o.hide)
-                //Filter out all sequential dividers
-                .filter((o, index, all) => o !== 'divider' || all[index + 1] !== 'divider')
-                .map((o, index, list) =>
-                  o === 'divider' ? (
-                    index !== 0 &&
-                    index != list.length - 1 && <Divider key={index} sx={{ margin: 0 }} />
-                  ) : (
-                    <MenuItem
-                      key={index}
-                      onClick={(e) => {
-                        o.onClick && o.onClick()
-                        closeMenu()
-                        e.stopPropagation()
-                      }}
-                      disabled={o.disabled}
-                    >
-                      {o.icon && (
-                        <ListItemIcon
-                          sx={{
-                            color: o.danger ? 'error.main' : undefined
-                          }}
-                        >
-                          {o.icon}
-                        </ListItemIcon>
-                      )}
-                      <ListItemText
-                        inset={!o.icon}
-                        sx={{
-                          color: o.danger ? 'error.dark' : undefined
-                        }}
-                        primary={o.label}
-                        primaryTypographyProps={{ fontWeight: o.bold ? 'bold' : undefined }}
-                      />
-
-                      {o.shortcut && (
-                        <Box pl={2} sx={{ opacity: 0.6 }}>
-                          <Typography
-                            variant="body2"
-                            fontSize={12}
-                            sx={{ color: o.danger ? 'error.light' : 'text.secondary' }}
-                          >
-                            {o.shortcut}
-                          </Typography>
-                        </Box>
-                      )}
-                    </MenuItem>
-                  )
-                )}
-            </MenuList>
+            <ContextMenuList options={options} />
           </Paper>
         </ClickAwayListener>
       </BetterPopper>

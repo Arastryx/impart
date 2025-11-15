@@ -121,7 +121,7 @@ export function TaggableBrowser({ onSettingsPressed, ...gridEvents }: TaggableBr
                   </Box>
                 </Collapse>
                 <Box pt={2}>
-                  <SettingsPanel onClick={() => onSettingsPressed && onSettingsPressed()} />
+                  <SettingsPanel onSettingsClick={() => onSettingsPressed && onSettingsPressed()} />
                 </Box>
               </Stack>
             </Box>

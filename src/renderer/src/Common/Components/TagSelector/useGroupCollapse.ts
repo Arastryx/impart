@@ -4,7 +4,7 @@ import { useCallback } from 'react'
 
 const COLLAPSED_GROUPS_KEY = 'collapsed_groups'
 
-interface GroupCollapse {
+export interface GroupCollapse {
   [groupId: number]: boolean
 }
 
@@ -13,8 +13,6 @@ export function useGroupCollapse() {
     COLLAPSED_GROUPS_KEY,
     {}
   )
-
-  const isCollapsed = useCallback((id: number) => collapsedGroups[id], [collapsedGroups])
 
   const toggleGroupCollapse = useCallback(
     (id: number) => {
@@ -49,5 +47,5 @@ export function useGroupCollapse() {
     []
   )
 
-  return { isCollapsed, toggleGroupCollapse, expandAll, collapseAll }
+  return { collapsedGroups, toggleGroupCollapse, expandAll, collapseAll }
 }

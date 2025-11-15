@@ -53,6 +53,19 @@ export function Tag({ tag, selected, editable, onSelect, onExclude, size, exclud
               onClick: () => setEditMode(true)
             },
             {
+              label: 'Is NSFW',
+              isChecked: tag.isNsfw,
+              onClick: async () => {
+                await window.tagApi.editTag(tag.id, {
+                  color: tag.color,
+                  label: tag.label,
+                  isNsfw: !tag.isNsfw
+                })
+
+                reload()
+              }
+            },
+            {
               icon: <DeleteIcon />,
               label: 'Delete',
               onClick: async () => {

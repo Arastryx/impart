@@ -20,13 +20,15 @@ export interface TaggableProviderProps {
 }
 
 const DEFAULT_ORDER_KEY = 'defaultOrder'
+const DEFAULT_NSFW_KEY = 'defaultNsfwKey'
 
 export function TaggableProvider({ children }: TaggableProviderProps) {
   const { isTaskRunning } = useTaskStatus()
 
   const [stackTrail, setStackTrail] = useState<Impart.TaggableStack[]>([])
   const [fetchOptions, setFetchOptions] = usePartialState<Impart.FetchTaggablesOptions>(() => ({
-    order: (localStorage.getItem(DEFAULT_ORDER_KEY) as 'alpha' | 'date' | null) ?? 'alpha'
+    order: (localStorage.getItem(DEFAULT_ORDER_KEY) as 'alpha' | 'date' | null) ?? 'alpha',
+    allowNsfw: (localStorage.getItem(DEFAULT_NSFW_KEY) as boolean | null) ?? true
   }))
 
   const updateStackTrail = useCallback((stack: Impart.TaggableStack[]) => {

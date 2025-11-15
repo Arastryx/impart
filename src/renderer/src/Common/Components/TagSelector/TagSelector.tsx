@@ -1,30 +1,17 @@
-import { Stack, Button, Box, Divider, styled, BoxProps, IconButton, Tooltip } from '@mui/material'
+import { Stack, Button, Box, Divider, IconButton, Tooltip } from '@mui/material'
 import AddIcon from '@mui/icons-material/AddRounded'
 import { useMultiSelection } from '../../Hooks/useMultiSelection'
 import { useCallback, useState } from 'react'
-import { TagGroup } from './TagGroup'
 import { useTagGroups } from '@renderer/EntityProviders/TagProvider'
 import { SearchBar } from '../SearchBar'
-import { Draggable } from '../DragAndDrop'
 import { Droppable } from '../DragAndDrop/Droppable'
 import { TagSelection } from './TagSelection'
 import { EmptyTagGroups } from './EmptyTagGroups'
-import { satisfiesFilter } from './satisfiesFilter'
 import { useGroupCollapse } from './useGroupCollapse'
 import UnfoldLessIcon from '@mui/icons-material/UnfoldLess'
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore'
-
-const DropIndicator = styled(Box, { shouldForwardProp: (prop) => prop !== 'showIndicator' })<
-  BoxProps & { showIndicator: boolean }
->(({ showIndicator, theme }) =>
-  showIndicator
-    ? {
-        borderTop: `3px solid ${theme.palette.primary.main}`,
-        marginTop: '-6px',
-        paddingTop: '3px'
-      }
-    : {}
-)
+import { GroupDropIndicator } from './GroupDropIndicator'
+import { GroupList } from './GroupList'
 
 export interface TagSelectorProps {
   selection?: Impart.Tag[]
@@ -39,7 +26,7 @@ export function TagSelector({
   onSelectionChange,
   onExclusionChange
 }: TagSelectorProps) {
-  const { isCollapsed, toggleGroupCollapse, expandAll, collapseAll } = useGroupCollapse()
+  const { collapsedGroups, toggleGroupCollapse, expandAll, collapseAll } = useGroupCollapse()
   const { groups, reload, tags } = useTagGroups()
 
   const { selectItem, itemIsSelected } = useMultiSelection(
@@ -91,52 +78,31 @@ export function TagSelector({
             </IconButton>
           </Tooltip>
         </Stack>
-        {groups
-          ?.filter(
-            (g) =>
-              (g.tags?.length == 0 && !filter) || g.tags?.some((t) => satisfiesFilter(t, filter))
-          )
-          .map((g) => (
-            <Droppable
-              key={g.id}
-              id={g.id}
-              type="tagGroup"
-              hideIndicator
-              render={({ overType }) => (
-                <DropIndicator showIndicator={overType === 'tagGroup'}>
-                  <Draggable type="tagGroup" id={g.id} exposeHandle>
-                    <TagGroup
-                      group={g}
-                      selectedTags={selection}
-                      excludedTags={exclusion}
-                      filter={filter}
-                      onSelect={(t) => {
-                        selectItem(t)
-                        if (itemIsExcluded(t)) {
-                          excludeItem(t)
-                        }
-                      }}
-                      onExclude={(t) => {
-                        excludeItem(t)
-                        if (itemIsSelected(t)) {
-                          selectItem(t)
-                        }
-                      }}
-                      collapsed={isCollapsed(g.id)}
-                      onToggleCollapse={() => toggleGroupCollapse(g.id)}
-                    />
-                  </Draggable>
-                </DropIndicator>
-              )}
-            />
-          ))}
-
+        <GroupList
+          filter={filter}
+          selection={selection}
+          exclusion={exclusion}
+          collapsedGroups={collapsedGroups}
+          onToggleCollapse={toggleGroupCollapse}
+          onSelect={(t) => {
+            selectItem(t)
+            if (itemIsExcluded(t)) {
+              excludeItem(t)
+            }
+          }}
+          onExclude={(t) => {
+            excludeItem(t)
+            if (itemIsSelected(t)) {
+              selectItem(t)
+            }
+          }}
+        />
         <Droppable
           type="tagGroup"
           id={-1}
           hideIndicator
           render={({ overType }) => (
-            <DropIndicator showIndicator={overType === 'tagGroup'}>
+            <GroupDropIndicator showIndicator={overType === 'tagGroup'}>
               <Button
                 onClick={async () => {
                   await window.tagApi.createGroup()
@@ -146,7 +112,7 @@ export function TagSelector({
               >
                 <AddIcon />
               </Button>
-            </DropIndicator>
+            </GroupDropIndicator>
           )}
         />
       </Stack>

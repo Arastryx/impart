@@ -13,6 +13,7 @@ export interface FetchTaggablesOptions {
   stackId?: number
   onlyHidden?: boolean
   onlyFiles?: boolean
+  allowNsfw?: boolean
 }
 
 export namespace TaggableManager {
@@ -24,7 +25,7 @@ export namespace TaggableManager {
       })
 
     if (options) {
-      const { tagIds, order, search, year, excludedTagIds, directories } = options
+      const { tagIds, order, search, year, excludedTagIds, directories, allowNsfw } = options
       if (tagIds && tagIds.length > 0) {
         applyTags(query, tagIds)
       }
@@ -47,6 +48,15 @@ export namespace TaggableManager {
 
       if (directories && directories.length > 0) {
         query.andWhere('files.directory IN (:...directories)', { directories })
+      }
+
+      if (!allowNsfw) {
+        query.andWhere(
+          `files.id NOT IN (SELECT taggable.id
+            FROM taggable
+            INNER JOIN taggable_tags_tag AS relation ON taggable.id = relation.taggableId
+            INNER JOIN tag ON relation.tagId = tag.id AND tag.isNsfw = 1)`
+        )
       }
     }
 

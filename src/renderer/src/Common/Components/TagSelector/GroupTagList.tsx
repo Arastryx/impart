@@ -7,6 +7,7 @@ import { satisfiesFilter } from './satisfiesFilter'
 import AddIcon from '@mui/icons-material/Add'
 import { Tag } from '../Tag'
 import { CenteredOverlay } from '../CenteredOverlay'
+import { useTaggables } from '@renderer/EntityProviders/TaggableProvider'
 
 const DropIndicator = styled(Box, { shouldForwardProp: (prop) => prop !== 'showIndicator' })<
   BoxProps & { showIndicator: boolean }
@@ -41,11 +42,16 @@ export function GroupTagList({
   onExclude,
   filter
 }: GroupTagListProps) {
+  const {
+    fetchOptions: { allowNsfw }
+  } = useTaggables()
+
   return (
     <Grid container py={1} spacing={2}>
       {tags
         ?.slice()
         .filter((t) => satisfiesFilter(t, filter))
+        .filter((t) => allowNsfw || !t.isNsfw)
         .sort((a, b) => a.tagOrder - b.tagOrder)
         .map((t) => (
           <Grid key={t.id}>

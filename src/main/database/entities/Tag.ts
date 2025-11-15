@@ -18,6 +18,9 @@ export class Tag extends BaseEntity {
   @Column({ nullable: true })
   color?: string
 
+  @Column({ nullable: false, default: false })
+  isNsfw: boolean
+
   @ManyToOne(() => TagGroup, (g) => g.tags, { nullable: false, onDelete: 'CASCADE' })
   group?: TagGroup
 

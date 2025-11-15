@@ -1,7 +1,7 @@
 {
-  "name": "sqlite-test",
-  "version": "1.0.0",
-  "description": "An Electron application with React and TypeScript",
+  "name": "impart",
+  "version": "1.2.0-alpha.1",
+  "description": "Tag-based art organization app",
   "main": "./out/main/index.js",
   "author": "example.com",
   "homepage": "https://electron-vite.org",

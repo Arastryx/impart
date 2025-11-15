@@ -17,7 +17,11 @@ export function TagEditor({ tag, show, onEdit, onClose }: TagEditorProps) {
   const [internalColor, setInternalColor] = useState(tag.color ?? theme.palette.primary.main)
 
   const edit = async () => {
-    await window.tagApi.editTag(tag.id, internalLabel, internalColor)
+    await window.tagApi.editTag(tag.id, {
+      isNsfw: tag.isNsfw,
+      color: internalColor,
+      label: internalLabel
+    })
     onEdit && onEdit()
     onClose && onClose()
   }
