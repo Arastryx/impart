@@ -1,6 +1,7 @@
 import React from 'react'
 import { DirectoryEditor } from './DirectoryEditor'
 import { produce } from 'immer'
+import { isSubdirectory } from './isSubdirectory'
 
 export interface DirectoryListProps {
   directoryState: Impart.Directory[]
@@ -62,7 +63,7 @@ export function DirectoryList({
           directoryState={directoryState.find((state) => state.path === original.path)}
           originalDirectory={original}
           subDirectories={directoryState.filter(
-            (ds) => ds.path != original.path && ds.path.startsWith(original.path)
+            (ds) => ds.path != original.path && isSubdirectory(ds.path, original.path)
           )}
           onChange={(updatedState) => updateDirectory(original.path, updatedState)}
           onDelete={() => onChange(removeDir(original))}
@@ -77,7 +78,7 @@ export function DirectoryList({
             directoryState={state}
             subDirectories={directoryState.filter(
               (otherState) =>
-                state.path != otherState.path && otherState.path.startsWith(state.path)
+                state.path != otherState.path && isSubdirectory(otherState.path, state.path)
             )}
             onChange={(updatedState) => updateDirectory(state.path, updatedState)}
             onDelete={() => onChange(removeDir(state))}
