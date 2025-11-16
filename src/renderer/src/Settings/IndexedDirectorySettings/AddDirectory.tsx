@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolderRounded'
 import { Box, Button, Dialog, DialogContent, DialogTitle, Stack, Typography } from '@mui/material'
 import folderAlreadyExists from './folderAlreadyExists.png'
+import { isSubdirectory } from './isSubdirectory'
 
 export interface AddDirectoryProps {
   directoryState: Impart.Directory[]
@@ -21,7 +22,10 @@ export function AddDirectory({ directoryState, onAdd }: AddDirectoryProps) {
     }
 
     for (const directory of directoryState) {
-      if (directory.path === folder || (directory.recursive && folder.startsWith(directory.path))) {
+      if (
+        directory.path === folder ||
+        (directory.recursive && isSubdirectory(folder, directory.path))
+      ) {
         setConflictingDirectory(directory)
         setLoadedPath(folder)
         setShowConflict(true)
