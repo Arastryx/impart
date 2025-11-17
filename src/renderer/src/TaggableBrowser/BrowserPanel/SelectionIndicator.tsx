@@ -34,6 +34,7 @@ export function SelectionIndicator({
         borderTopRightRadius: 20,
         borderBottomRightRadius: 20
       }}
+      onClick={(e) => e.stopPropagation()}
     >
       <Stack direction="row" py={0.5} pl={1} alignItems="center" gap={1}>
         <Typography variant="body2">
