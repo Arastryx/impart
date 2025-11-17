@@ -7,7 +7,9 @@ import {
   Collapse,
   Breadcrumbs,
   Chip,
-  emphasize
+  emphasize,
+  Tooltip,
+  CircularProgress
 } from '@mui/material'
 import { SortButtons } from './SortButtons'
 import { SearchBar } from '../../../Common/Components/SearchBar'
@@ -16,6 +18,8 @@ import { Droppable } from '@renderer/Common/Components/DragAndDrop/Droppable'
 import { useTaggables } from '@renderer/EntityProviders/TaggableProvider'
 import { useRef } from 'react'
 import { GridFilter } from './GridFilter'
+import RefreshIcon from '@mui/icons-material/Refresh'
+import { useImpartIpcCall } from '@renderer/Common/Hooks/useImpartIpc'
 
 const ToolbarIconButton = styled(IconButton)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
@@ -53,6 +57,8 @@ export function GridActions({ stack, onStackChange }: GridActionsProps) {
     setFetchOptions
   } = useTaggables()
 
+  const { callIpc: indexAll, isLoading } = useImpartIpcCall(() => window.indexApi.indexAll(), [])
+
   const anchorRef = useRef<HTMLDivElement | null>(null)
 
   return (
@@ -72,6 +78,16 @@ export function GridActions({ stack, onStackChange }: GridActionsProps) {
             endAdornment={<GridFilter anchorEl={anchorRef.current} />}
           />
         </Box>
+        {isLoading && <CircularProgress />}
+
+        {!isLoading && (
+          <Tooltip title="Refresh">
+            <ToolbarIconButton onClick={() => indexAll()}>
+              <RefreshIcon />
+            </ToolbarIconButton>
+          </Tooltip>
+        )}
+
         <SortButtons />
       </Stack>
       <Collapse in={stack.length > 0}>
