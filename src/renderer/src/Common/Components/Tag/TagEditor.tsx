@@ -18,7 +18,7 @@ export function TagEditor({ tag, show, onEdit, onClose }: TagEditorProps) {
 
   const edit = async () => {
     await window.tagApi.editTag(tag.id, {
-      isNsfw: tag.isNsfw,
+      isPrivate: tag.isPrivate,
       color: internalColor,
       label: internalLabel
     })

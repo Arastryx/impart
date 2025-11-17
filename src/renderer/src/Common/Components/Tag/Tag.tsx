@@ -53,13 +53,13 @@ export function Tag({ tag, selected, editable, onSelect, onExclude, size, exclud
               onClick: () => setEditMode(true)
             },
             {
-              label: 'Is NSFW',
-              isChecked: tag.isNsfw,
+              label: 'Is Private',
+              isChecked: tag.isPrivate,
               onClick: async () => {
                 await window.tagApi.editTag(tag.id, {
                   color: tag.color,
                   label: tag.label,
-                  isNsfw: !tag.isNsfw
+                  isPrivate: !tag.isPrivate
                 })
 
                 reload()

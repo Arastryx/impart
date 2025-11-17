@@ -43,7 +43,7 @@ export function GroupTagList({
   filter
 }: GroupTagListProps) {
   const {
-    fetchOptions: { allowNsfw }
+    fetchOptions: { allowPrivate }
   } = useTaggables()
 
   return (
@@ -51,7 +51,7 @@ export function GroupTagList({
       {tags
         ?.slice()
         .filter((t) => satisfiesFilter(t, filter))
-        .filter((t) => allowNsfw || !t.isNsfw)
+        .filter((t) => allowPrivate || !t.isPrivate)
         .sort((a, b) => a.tagOrder - b.tagOrder)
         .map((t) => (
           <Grid key={t.id}>

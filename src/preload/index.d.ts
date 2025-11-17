@@ -63,7 +63,7 @@ declare global {
       stackId?: number
       onlyHidden?: boolean
       onlyFiles?: boolean
-      allowNsfw?: boolean
+      allowPrivate?: boolean
     }
 
     //~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
@@ -75,13 +75,13 @@ declare global {
       label?: string
       tagOrder: number
       color?: string
-      isNsfw: boolean
+      isPrivate: boolean
     }
 
     interface TagModel {
       label?: string
       color?: string
-      isNsfw: boolean
+      isPrivate: boolean
     }
 
     interface TagGroup {
