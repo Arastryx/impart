@@ -13,7 +13,7 @@ import { useTaggables } from '@renderer/EntityProviders/TaggableProvider'
 import CancelIcon from '@mui/icons-material/CancelRounded'
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutlineRounded'
 import AddLinkIcon from '@mui/icons-material/AddLinkRounded'
-import { isTaggableImage, isTaggableStack } from '@renderer/common/taggable'
+import { isTaggableImage, isTaggableStack } from '@renderer/Common/taggable'
 
 export interface TaggableGridEvents {
   onAssociateWithSource?: (taggables: Impart.TaggableImage[]) => void

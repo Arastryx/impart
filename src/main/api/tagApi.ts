@@ -40,3 +40,4 @@ export function setupTagApi() {
     handleError(() => TagManager.deleteTag(...params))
   )
 }
+

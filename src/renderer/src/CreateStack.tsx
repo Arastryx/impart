@@ -14,7 +14,7 @@ import CheckIcon from '@mui/icons-material/CheckRounded'
 import { TaggableDisplay } from './Common/Components/TaggableDisplay'
 import { useImpartIpcCall } from './Common/Hooks/useImpartIpc'
 import { useTaggables } from './EntityProviders/TaggableProvider'
-import { isTaggableImage, isTaggableStack } from './common/taggable'
+import { isTaggableImage, isTaggableStack } from './Common/taggable'
 import { VirtualTaggableGrid } from './Common/Components/TaggableGrid'
 
 function getInitialName(items: Impart.Taggable[]) {

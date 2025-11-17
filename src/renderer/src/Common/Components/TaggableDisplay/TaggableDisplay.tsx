@@ -8,7 +8,7 @@ import { useEditTaggable } from '@renderer/TaggableBrowser/EditTaggableProvider'
 import { BetterPopper } from '../BetterPopper'
 import { EditTags } from './EditTags'
 import { RenameStack } from './RenameStack'
-import { isTaggableFile, isTaggableImage, isTaggableStack } from '@renderer/common/taggable'
+import { isTaggableFile, isTaggableImage, isTaggableStack } from '@renderer/Common/taggable'
 
 export const BOX_WIDTH = 220
 export const BOX_HEIGHT = 190
