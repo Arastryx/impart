@@ -28,7 +28,7 @@ export function GroupList({
 }: GroupListProps) {
   const { groups } = useTagGroups()
   const {
-    fetchOptions: { allowNsfw }
+    fetchOptions: { allowPrivate }
   } = useTaggables()
 
   return (
@@ -37,7 +37,7 @@ export function GroupList({
         ?.filter(
           (g) => (g.tags?.length == 0 && !filter) || g.tags?.some((t) => satisfiesFilter(t, filter))
         )
-        .filter((g) => allowNsfw || g.tags?.some((t) => !t.isNsfw))
+        .filter((g) => allowPrivate || g.tags?.some((t) => !t.isPrivate))
         .map((g) => (
           <Droppable
             key={g.id}

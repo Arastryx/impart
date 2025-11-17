@@ -21,12 +21,12 @@ export function SettingsPanel({ onSettingsClick }: SettingsPanelProps) {
           </IconButton>
         </Tooltip>
         <Tooltip title="Toggle NSFW">
-          <IconButton onClick={() => setFetchOptions({ allowNsfw: !fetchOptions.allowNsfw })}>
+          <IconButton onClick={() => setFetchOptions({ allowPrivate: !fetchOptions.allowPrivate })}>
             <Box position="relative">
               <Typography fontWeight="bold" fontSize={20} lineHeight={1}>
                 18
               </Typography>
-              {!fetchOptions.allowNsfw && (
+              {!fetchOptions.allowPrivate && (
                 <BlockIcon sx={{ position: 'absolute', top: -8, left: -5, fontSize: 36 }} />
               )}
             </Box>
@@ -36,3 +36,4 @@ export function SettingsPanel({ onSettingsClick }: SettingsPanelProps) {
     </Card>
   )
 }
+
