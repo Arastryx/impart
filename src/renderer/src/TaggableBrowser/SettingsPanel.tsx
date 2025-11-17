@@ -1,7 +1,8 @@
 import { Box, Card, IconButton, Stack, Tooltip, Typography } from '@mui/material'
 
 import SettingsIcon from '@mui/icons-material/SettingsRounded'
-import BlockIcon from '@mui/icons-material/Block'
+import SheildIcon from '@mui/icons-material/Shield'
+import NoShieldIcon from '@mui/icons-material/RemoveModerator'
 import { useState } from 'react'
 import { useTaggables } from '@renderer/EntityProviders/TaggableProvider'
 
@@ -20,16 +21,10 @@ export function SettingsPanel({ onSettingsClick }: SettingsPanelProps) {
             <SettingsIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Toggle NSFW">
+        <Tooltip title="Toggle Private Tags">
           <IconButton onClick={() => setFetchOptions({ allowPrivate: !fetchOptions.allowPrivate })}>
-            <Box position="relative">
-              <Typography fontWeight="bold" fontSize={20} lineHeight={1}>
-                18
-              </Typography>
-              {!fetchOptions.allowPrivate && (
-                <BlockIcon sx={{ position: 'absolute', top: -8, left: -5, fontSize: 36 }} />
-              )}
-            </Box>
+            {!fetchOptions.allowPrivate && <SheildIcon />}
+            {fetchOptions.allowPrivate && <NoShieldIcon />}
           </IconButton>
         </Tooltip>
       </Stack>
