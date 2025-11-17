@@ -162,7 +162,7 @@ declare global {
     }
 
     indexApi: {
-      indexAll: () => Promise<void>
+      indexAll: () => Result<bool>
       selectDirectory: () => Promise<string | undefined>
       updateDirectories: (payload: Impart.Directory[]) => Result<void>
       calculateTotalIndexChanges: (
@@ -177,3 +177,4 @@ declare global {
     }
   }
 }
+

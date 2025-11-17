@@ -20,6 +20,7 @@ import { useRef } from 'react'
 import { GridFilter } from './GridFilter'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import { useImpartIpcCall } from '@renderer/Common/Hooks/useImpartIpc'
+import { useNotification } from '@renderer/Common/Components/NotificationProvider'
 
 const ToolbarIconButton = styled(IconButton)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
@@ -57,7 +58,16 @@ export function GridActions({ stack, onStackChange }: GridActionsProps) {
     setFetchOptions
   } = useTaggables()
 
-  const { callIpc: indexAll, isLoading } = useImpartIpcCall(() => window.indexApi.indexAll(), [])
+  const { callIpc: indexAll, isLoading } = useImpartIpcCall(window.indexApi.indexAll, [])
+  const { sendInfo } = useNotification()
+
+  const reloadIndices = async () => {
+    const changesDetected = await indexAll()
+
+    if (!changesDetected) {
+      sendInfo('No file changes detected')
+    }
+  }
 
   const anchorRef = useRef<HTMLDivElement | null>(null)
 
@@ -82,7 +92,7 @@ export function GridActions({ stack, onStackChange }: GridActionsProps) {
 
         {!isLoading && (
           <Tooltip title="Refresh">
-            <ToolbarIconButton onClick={() => indexAll()}>
+            <ToolbarIconButton onClick={() => reloadIndices()}>
               <RefreshIcon />
             </ToolbarIconButton>
           </Tooltip>

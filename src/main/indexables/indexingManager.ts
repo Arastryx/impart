@@ -30,24 +30,32 @@ export namespace IndexingManager {
       return
     }
 
+    let fileChangesDetected = false
+
     try {
       isIndexing = true
       const directories = await Directory.find({ relations: { autoTags: true } })
 
       for (const directory of directories) {
         console.log('Indexing:', directory.path)
-        await indexFiles(directory)
+        const changesDetected = await indexFiles(directory)
+
+        if (changesDetected) {
+          fileChangesDetected = true
+        }
       }
     } finally {
       isIndexing = false
     }
+
+    return fileChangesDetected
   }
 
   export async function indexFiles(directory: Directory) {
     if (!existsSync(directory.path)) {
       console.log('Directory no longer exists! Removing...')
       await directory.remove()
-      return
+      return true
     }
 
     const dirsep = process.platform === 'linux' ? '/' : '\\'
@@ -98,7 +106,11 @@ export namespace IndexingManager {
           )
         }
       }
+
+      return true
     }
+
+    return false
   }
 
   type FilePath = { dir: string; name: string } | string
