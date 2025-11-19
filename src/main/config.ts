@@ -7,6 +7,7 @@ interface Config {
   'window.x': number
   'window.y': number
   'window.maximized': boolean
+  previousVersion: string
 }
 
 const schema: Schema<Config> = {
@@ -14,7 +15,8 @@ const schema: Schema<Config> = {
   'window.height': {},
   'window.x': {},
   'window.y': {},
-  'window.maximized': {}
+  'window.maximized': {},
+  previousVersion: {}
 }
 
 export const store = new Store({

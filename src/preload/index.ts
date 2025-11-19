@@ -19,6 +19,10 @@ function generateCallback(channel: string) {
   }
 }
 
+contextBridge.exposeInMainWorld('commonApi', {
+  getPreviousVersion: generateEndpoint('common/getPreviousVersion')
+})
+
 contextBridge.exposeInMainWorld('fileApi', {
   openFile: generateCommand('file/openFile'),
   openFileLocation: generateCommand('file/openFileLocation')
@@ -79,3 +83,4 @@ contextBridge.exposeInMainWorld('thumbnailApi', {
   onBuildingThumbnail: generateCallback('thumbnail/buildingThumbnail'),
   onThumbnailBuilt: generateCallback('thumbnail/thumbnailBuilt')
 })
+

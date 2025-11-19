@@ -108,6 +108,10 @@ declare global {
   interface Window {
     electron: ElectronAPI
 
+    commonApi: {
+      getPreviousVersion: () => Promise<{ version: string }>
+    }
+
     fileApi: {
       openFile: (indexableId: number) => void
       openFileLocation: (indexableId: number) => void

@@ -12,6 +12,7 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import { TaggableSelectionProvider } from './TaggableSelectionProvider'
 import { AssociateWithSource } from './AssociateWithSource'
 import { isTaggableImage } from './Common/taggable'
+import { PatchNotes } from './PatchNotes/PatchNotes'
 
 type ImpartModal = 'bulkTag' | 'settings' | 'createStack' | 'associateSource'
 
@@ -82,6 +83,7 @@ export function Impart({}: ImpartProps) {
             </DialogContent>
           </Dialog>
         </Box>
+        <PatchNotes />
       </ImpartDragAndDropProvider>
     </TaggableSelectionProvider>
   )
