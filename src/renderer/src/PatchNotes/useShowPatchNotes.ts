@@ -10,8 +10,6 @@ export function useShowPatchNotes() {
   )
 
   useEffect(() => {
-    console.log(isLoading, previousVersion?.version, import.meta.env.PACKAGE_VERSION)
-
     if (!isLoading && previousVersion?.version != import.meta.env.PACKAGE_VERSION) {
       setShow(true)
     }
