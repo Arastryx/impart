@@ -8,14 +8,17 @@ import HideImageIcon from '@mui/icons-material/HideImageRounded'
 import { HiddenItems } from './HiddenItems'
 import InfoIcon from '@mui/icons-material/InfoRounded'
 import { About } from './About/About'
+import { Updates } from './Updates'
+import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt'
 
-type SettingsType = 'directories' | 'hiddenItems' | 'about'
+type SettingsType = 'updates' | 'directories' | 'hiddenItems' | 'about'
 
 export interface SettingsProps {
   onClose?: () => void
+  onShowPatchNotes?: () => void
 }
 
-export function Settings({ onClose }: SettingsProps) {
+export function Settings({ onClose, onShowPatchNotes }: SettingsProps) {
   const [selectedTab, setSelectedTab] = useState<SettingsType>('directories')
 
   const { isTaskRunning } = useTaskStatus()
@@ -52,12 +55,14 @@ export function Settings({ onClose }: SettingsProps) {
               >
                 <Tab label="Directories" value="directories" icon={<FolderIcon />} />
                 <Tab label="Hidden Items" value="hiddenItems" icon={<HideImageIcon />} />
+                <Tab label="Updates" value="updates" icon={<SystemUpdateAltIcon />} />
                 <Tab label="About" value="about" icon={<InfoIcon />} />
               </Tabs>
             </Stack>
             <Box flex={1} p={1} pr={8} height="100%" sx={{ overflowY: 'scroll' }}>
               {selectedTab === 'directories' && <IndexedDirectoriesSettings />}
               {selectedTab === 'hiddenItems' && <HiddenItems />}
+              {selectedTab === 'updates' && <Updates onShowPatchNotes={onShowPatchNotes} />}
               {selectedTab === 'about' && <About />}
             </Box>
           </Stack>
