@@ -31,7 +31,7 @@ export function Patch1_2_0({}: Patch1_2_0Props) {
             Linux Support!
           </Typography>
           <Typography>
-            To celebrate it's one year anniversary, Impart has been ported to Linux! By virtue of
+            To celebrate its one year anniversary, Impart has been ported to Linux! By virtue of
             being built in electron, the Linux version of Impart is feature complete, and will
             receive updates alongside the windows version
           </Typography>
