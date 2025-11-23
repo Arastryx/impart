@@ -1,5 +1,7 @@
 import { Box, Stack, Tooltip, Typography } from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh'
+import paintingTux from './PaintingTux.png'
+import privateArt from './Private.png'
 import React from 'react'
 
 export interface Patch1_2_0Props {}
@@ -15,16 +17,15 @@ export function Patch1_2_0({}: Patch1_2_0Props) {
       </Typography>
       <Stack direction={{ md: 'row', xs: 'column' }} gap={3} mb={3}>
         <Box flex={1}>
-          <Stack
-            bgcolor="primary.light"
-            width="100%"
-            height={200}
-            alignItems="center"
-            justifyContent="center"
-            color="white"
-            mb={2}
-          >
-            [ART]
+          <Stack width="100%" alignItems="center" mb={2}>
+            <Box
+              component="img"
+              src={paintingTux}
+              width="100%"
+              maxWidth={600}
+              bgcolor={'secondary.light'}
+              borderRadius={5}
+            />
           </Stack>
           <Typography variant="h5" gutterBottom>
             Linux Support!
@@ -36,16 +37,15 @@ export function Patch1_2_0({}: Patch1_2_0Props) {
           </Typography>
         </Box>
         <Box flex={1}>
-          <Stack
-            bgcolor="primary.light"
-            width="100%"
-            height={200}
-            alignItems="center"
-            justifyContent="center"
-            color="white"
-            mb={2}
-          >
-            [ART]
+          <Stack width="100%" alignItems="center" mb={2}>
+            <Box
+              component="img"
+              src={privateArt}
+              width="100%"
+              maxWidth={600}
+              bgcolor={'secondary.light'}
+              borderRadius={5}
+            />
           </Stack>
 
           <Typography variant="h5" gutterBottom>
