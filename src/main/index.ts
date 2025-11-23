@@ -14,6 +14,7 @@ import { ThumbnailManager } from './indexables/thumbnailManager'
 import { store } from './config'
 import { autoUpdater } from 'electron-updater'
 import electronLog from 'electron-log'
+import { setupCommonApi } from './api/commonApi'
 
 electronLog.transports.file.level = 'info'
 autoUpdater.logger = electronLog
@@ -130,6 +131,7 @@ if (!gotTheLock) {
 
     await AppDataSource.initialize()
 
+    setupCommonApi()
     setupFileApi()
     setupTaggableApi()
     setupStackApi()
@@ -149,6 +151,8 @@ if (!gotTheLock) {
   // for applications and their menu bar to stay active until the user quits
   // explicitly with Cmd + Q.
   app.on('window-all-closed', () => {
+    store.set('previousVersion', import.meta.env.PACKAGE_VERSION)
+
     if (process.platform !== 'darwin') {
       app.quit()
     }
@@ -157,3 +161,4 @@ if (!gotTheLock) {
   // In this file you can include the rest of your app"s specific main process
   // code. You can also put them in separate files and require them here.
 }
+

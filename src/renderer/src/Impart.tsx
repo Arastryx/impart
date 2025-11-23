@@ -12,6 +12,8 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import { TaggableSelectionProvider } from './TaggableSelectionProvider'
 import { AssociateWithSource } from './AssociateWithSource'
 import { isTaggableImage } from './Common/taggable'
+import { PatchNotes } from './PatchNotes/PatchNotes'
+import { useShowPatchNotes } from './PatchNotes'
 
 type ImpartModal = 'bulkTag' | 'settings' | 'createStack' | 'associateSource'
 
@@ -29,6 +31,8 @@ export function Impart({}: ImpartProps) {
 
   const { reload: fetchTaggables } = useTaggables()
 
+  const { show, setShow } = useShowPatchNotes()
+
   useEffect(() => {
     ;(async () => {
       await window.indexApi.indexAll()
@@ -44,7 +48,9 @@ export function Impart({}: ImpartProps) {
   const renderContent = () => {
     switch (currentModal) {
       case 'settings':
-        return <Settings onClose={() => setCurrentModal(null)} />
+        return (
+          <Settings onClose={() => setCurrentModal(null)} onShowPatchNotes={() => setShow(true)} />
+        )
       case 'bulkTag':
         return <BulkTag items={selection} onFinish={closeAndRefresh} />
       case 'createStack':
@@ -82,6 +88,7 @@ export function Impart({}: ImpartProps) {
             </DialogContent>
           </Dialog>
         </Box>
+        <PatchNotes show={show} onClose={() => setShow(false)} />
       </ImpartDragAndDropProvider>
     </TaggableSelectionProvider>
   )

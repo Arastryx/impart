@@ -3,8 +3,9 @@
   "version": "1.2.0-alpha.1",
   "description": "Tag-based art organization app",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://electron-vite.org",
+  "author": "github.com/Arastryx",
+  "homepage": "https://github.com/arastryx/impart",
+  "repository": "github:arastryx/impart",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
@@ -20,7 +21,9 @@
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
     "build:mac": "electron-vite build && electron-builder --mac",
-    "build:linux": "electron-vite build && electron-builder --linux"
+    "build:linux": "electron-vite build && electron-builder --linux",
+    "publish": "npm run build && electron-builder --win --publish always",
+    "test": "vitest"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -73,5 +76,29 @@
     "react-dom": "^19.1.1",
     "typescript": "^5.9.2",
     "vite": "^7.1.6"
+  },
+  "build": {
+    "appId": "com.arastryx.impart",
+    "productName": "Impart",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "arastryx",
+        "repo": "impart"
+      }
+    ],
+    "win": {
+      "publish": [
+        "github"
+      ],
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    }
   }
 }

@@ -5,7 +5,7 @@ import loadVersion from 'vite-plugin-package-version'
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin(), swcPlugin()]
+    plugins: [externalizeDepsPlugin(), swcPlugin(), loadVersion()]
   },
   preload: {
     plugins: [externalizeDepsPlugin()]
@@ -19,3 +19,4 @@ export default defineConfig({
     plugins: [react(), loadVersion()]
   }
 })
+
