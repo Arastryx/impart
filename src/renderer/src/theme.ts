@@ -63,6 +63,10 @@ export const theme = createTheme({
             border-radius: 4px;
             border: 1px dashed #b2d2cbff
           }
+
+          a {
+            color: #106751ff
+          }
         `
     },
 

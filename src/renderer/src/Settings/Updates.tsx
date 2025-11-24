@@ -48,9 +48,19 @@ export function Updates({ onShowPatchNotes }: UpdatesProps) {
         <Box flex={1}>
           <Typography fontWeight="bold">Enable Auto Updating</Typography>
           <Typography variant="body2">
-            Auto-updating takes place whenever the app starts up. When disabled, the app can still
-            be manually updated. If re-enabled, the app must be restarted for the changes to take
-            place
+            Auto-updating takes place whenever the app starts up. If disabled, updates can always be
+            installed the conventional way (downloading them from{' '}
+            <a href="https://arastryx.itch.io/impart" target="_blank">
+              Itch.io
+            </a>{' '}
+            or{' '}
+            <a href="https://github.com/Arastryx/impart/releases" target="_blank">
+              GitHub
+            </a>
+            ).{' '}
+            <Typography variant="caption" component="span" color="primary.light">
+              TODO: Implement fancy "Check For Updates" button and so on
+            </Typography>
           </Typography>
         </Box>
       </Stack>
