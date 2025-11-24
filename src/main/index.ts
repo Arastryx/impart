@@ -19,7 +19,9 @@ import { setupCommonApi } from './api/commonApi'
 electronLog.transports.file.level = 'info'
 autoUpdater.logger = electronLog
 
-autoUpdater.checkForUpdatesAndNotify()
+if (store.get('autoUpdatingEnabled')) {
+  autoUpdater.checkForUpdatesAndNotify()
+}
 
 interface ImpartApp {
   mainWindow?: BrowserWindow

@@ -34,3 +34,4 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     </NotificationProvider>
   </React.StrictMode>
 )
+

@@ -66,6 +66,21 @@ export const theme = createTheme({
         `
     },
 
+    MuiSwitch: {
+      styleOverrides: {
+        root: {
+          '& .MuiSwitch-track': {
+            opacity: 0.12
+          }
+        },
+        checked: {
+          '& .MuiSwitch-track': {
+            opacity: 0.38
+          }
+        }
+      }
+    },
+
     MuiChip: {
       styleOverrides: {
         sizeMedium: {

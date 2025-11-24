@@ -20,7 +20,8 @@ function generateCallback(channel: string) {
 }
 
 contextBridge.exposeInMainWorld('commonApi', {
-  getPreviousVersion: generateEndpoint('common/getPreviousVersion')
+  getConfigItem: generateEndpoint('common/getConfigItem'),
+  setConfigItem: generateCommand('common/setConfigItem')
 })
 
 contextBridge.exposeInMainWorld('fileApi', {
