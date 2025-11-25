@@ -33,7 +33,10 @@ export function Patch1_2_0({}: Patch1_2_0Props) {
           <Typography>
             To celebrate its one year anniversary, Impart has been ported to Linux! By virtue of
             being built in electron, the Linux version of Impart is feature complete, and will
-            receive updates alongside the windows version
+            receive updates alongside the windows version{' '}
+            <Typography variant="caption" component="span">
+              (Thanks to @the-furry-hubofeverything)
+            </Typography>
           </Typography>
         </Box>
         <Box flex={1}>
@@ -97,6 +100,8 @@ export function Patch1_2_0({}: Patch1_2_0Props) {
           Added a Refresh (<RefreshIcon fontSize="inherit" sx={{ verticalAlign: 'middle' }} />)
           button which re-indexes all directories and loads any changed files
         </Typography>
+        <Typography component="li">Updated About page</Typography>
+
         <Typography variant="body2" component={'li'} sx={{ mt: 1 }}>
           Updated almost every single package internally; Electron, React, Vite, MUI, you name it!
         </Typography>

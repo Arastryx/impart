@@ -2,6 +2,7 @@ import { createTheme } from '@mui/material'
 import NunitoSans from './fonts/NunitoSans.woff2'
 import NunitoSansItalic from './fonts/NunitoSans-Italic.woff2'
 import Mallanna from './fonts/Mallanna-Regular.woff2'
+import ZenOldMincho from './fonts/ZenOldMincho.woff2'
 
 export const theme = createTheme({
   cssVariables: true,
@@ -55,6 +56,11 @@ export const theme = createTheme({
           @font-face {
             font-family: 'Mallanna';
             src: url(${Mallanna});
+          }
+
+          @font-face {
+            font-family: 'ZenOldMincho';
+            src: url(${ZenOldMincho});
           }
 
           code {
