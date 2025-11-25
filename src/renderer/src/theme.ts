@@ -63,7 +63,26 @@ export const theme = createTheme({
             border-radius: 4px;
             border: 1px dashed #b2d2cbff
           }
+
+          a {
+            color: #106751ff
+          }
         `
+    },
+
+    MuiSwitch: {
+      styleOverrides: {
+        root: {
+          '& .MuiSwitch-track': {
+            opacity: 0.12
+          }
+        },
+        checked: {
+          '& .MuiSwitch-track': {
+            opacity: 0.38
+          }
+        }
+      }
     },
 
     MuiChip: {
