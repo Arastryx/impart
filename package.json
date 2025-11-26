@@ -66,7 +66,7 @@
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^5.0.3",
     "electron": "^38.1.2",
-    "electron-builder": "^25.1.8",
+    "electron-builder": "^26.0.12",
     "electron-vite": "^4.0.1",
     "eslint": "^9.36.0",
     "eslint-plugin-react": "^7.37.5",
@@ -114,4 +114,3 @@
     }
   }
 }
-
