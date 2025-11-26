@@ -18,6 +18,9 @@ export class Tag extends BaseEntity {
   @Column({ nullable: true })
   color?: string
 
+  @Column({ nullable: false, default: false })
+  isPrivate: boolean
+
   @ManyToOne(() => TagGroup, (g) => g.tags, { nullable: false, onDelete: 'CASCADE' })
   group?: TagGroup
 
@@ -27,3 +30,4 @@ export class Tag extends BaseEntity {
   @ManyToMany(() => Directory, (d) => d.autoTags)
   autoTagDirectories?: Directory[]
 }
+

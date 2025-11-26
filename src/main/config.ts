@@ -7,6 +7,8 @@ interface Config {
   'window.x': number
   'window.y': number
   'window.maximized': boolean
+  previousVersion: string
+  autoUpdatingEnabled: boolean
 }
 
 const schema: Schema<Config> = {
@@ -14,7 +16,11 @@ const schema: Schema<Config> = {
   'window.height': {},
   'window.x': {},
   'window.y': {},
-  'window.maximized': {}
+  'window.maximized': {},
+  previousVersion: {},
+  autoUpdatingEnabled: {
+    default: true
+  }
 }
 
 export const store = new Store({
@@ -22,3 +28,5 @@ export const store = new Store({
   schema,
   name: app.isPackaged ? undefined : 'config-dev'
 })
+
+Store.initRenderer()

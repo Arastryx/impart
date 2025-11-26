@@ -4,7 +4,7 @@ import {
   CardContent,
   CardHeader,
   FormControlLabel,
-  Grid2,
+  Grid,
   IconButton,
   Switch,
   Tooltip,
@@ -80,14 +80,14 @@ export function DirectoryEditor({
         }
       />
       <CardContent>
-        <Grid2 container spacing={4} alignItems="center">
-          <Grid2>
+        <Grid container spacing={4} alignItems="center">
+          <Grid>
             <TagMultiSelect
               selection={directoryState.autoTags}
               onChange={(s) => onChange && onChange({ autoTags: s })}
             />
-          </Grid2>
-          <Grid2>
+          </Grid>
+          <Grid>
             <FormControlLabel
               control={
                 <Switch
@@ -123,8 +123,8 @@ export function DirectoryEditor({
                 </>
               }
             />
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </CardContent>
     </Card>
   )

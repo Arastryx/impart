@@ -97,11 +97,18 @@ export namespace TagManager {
     return tag
   }
 
-  export async function editTag(tagId: number, label?: string, color?: string) {
+  interface TagModel {
+    label?: string
+    color?: string
+    isPrivate: boolean
+  }
+
+  export async function editTag(tagId: number, { label, color, isPrivate }: TagModel) {
     const tagEntity = await Tag.findOneByOrFail({ id: tagId })
 
     tagEntity.label = label
     tagEntity.color = color
+    tagEntity.isPrivate = isPrivate
 
     await tagEntity.save()
 
@@ -189,3 +196,4 @@ export namespace TagManager {
     return true
   }
 }
+

@@ -53,6 +53,19 @@ export function Tag({ tag, selected, editable, onSelect, onExclude, size, exclud
               onClick: () => setEditMode(true)
             },
             {
+              label: 'Is Private',
+              isChecked: tag.isPrivate,
+              onClick: async () => {
+                await window.tagApi.editTag(tag.id, {
+                  color: tag.color,
+                  label: tag.label,
+                  isPrivate: !tag.isPrivate
+                })
+
+                reload()
+              }
+            },
+            {
               icon: <DeleteIcon />,
               label: 'Delete',
               onClick: async () => {

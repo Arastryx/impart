@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useState } from 'react'
 export interface NotificationData {
   sendError: (message: string) => void
   sendSuccess: (message: string) => void
+  sendInfo: (message: string) => void
 }
 
 const NotificationContext = createContext<NotificationData | null>(null)
@@ -35,9 +36,10 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
 
   const sendSuccess = useCallback((m: string) => sendNotification(m, 'success'), [sendNotification])
   const sendError = useCallback((m: string) => sendNotification(m, 'error'), [sendNotification])
+  const sendInfo = useCallback((m: string) => sendNotification(m, 'info'), [sendNotification])
 
   return (
-    <NotificationContext.Provider value={{ sendError, sendSuccess }}>
+    <NotificationContext.Provider value={{ sendError, sendSuccess, sendInfo }}>
       {children}
       <Snackbar
         open={showNotification}

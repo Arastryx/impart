@@ -1,4 +1,4 @@
-import { darken, Grid2 as Grid, Skeleton, Stack, Typography } from '@mui/material'
+import { Box, darken, Grid, Skeleton, Stack, Typography } from '@mui/material'
 import { forwardRef, useEffect, useState } from 'react'
 import { GridComponents, VirtuosoGrid } from 'react-virtuoso'
 import { BOX_HEIGHT, BOX_WIDTH } from '../TaggableDisplay/TaggableDisplay'
@@ -68,7 +68,7 @@ export function VirtualTaggableGrid({ taggables, ...wrapperProps }: VirtualTagga
   if (taggables.length === 0) {
     return (
       <Stack width="100%" height="100%" alignItems="center" justifyContent="center">
-        <img src={emptyImage} height={400} />
+        <Box component="img" src={emptyImage} height={400} borderRadius={5} mb={2} />
         <Typography color="primary.main" fontSize={36}>
           No Items Found
         </Typography>
@@ -91,3 +91,4 @@ export function VirtualTaggableGrid({ taggables, ...wrapperProps }: VirtualTagga
     />
   )
 }
+

@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, Button, Grid2, Divider } from '@mui/material'
+import { Box, Stack, Typography, Button, Grid, Divider } from '@mui/material'
 import React from 'react'
 import { Tag } from '../Tag/Tag'
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOffRounded'
@@ -27,23 +27,23 @@ export function TagSelection({
         </Button>
       </Stack>
       {selection && selection.length > 0 && (
-        <Grid2 container spacing={2}>
+        <Grid container spacing={2}>
           {selection.map((t) => (
-            <Grid2 key={t.id}>
+            <Grid key={t.id}>
               <Tag tag={t} onSelect={() => onDeselect && onDeselect(t)} />
-            </Grid2>
+            </Grid>
           ))}
-        </Grid2>
+        </Grid>
       )}
       {selection && selection.length > 0 && exclusion && exclusion.length > 0 && <Divider />}
       {exclusion && exclusion.length > 0 && (
-        <Grid2 container spacing={2}>
+        <Grid container spacing={2}>
           {exclusion?.map((t) => (
-            <Grid2 key={t.id}>
+            <Grid key={t.id}>
               <Tag tag={t} excluded onSelect={() => onInclude && onInclude(t)} />
-            </Grid2>
+            </Grid>
           ))}
-        </Grid2>
+        </Grid>
       )}
     </Stack>
   )

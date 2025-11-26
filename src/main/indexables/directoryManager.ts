@@ -89,9 +89,21 @@ export namespace DirectoryManager {
           : await Tag.findBy({ id: In(payload.autoTags) })
 
       directory.autoTags = nextTags
+    }
 
+    const recursionChanged = directory.recursive != payload.recursive
+    directory.recursive = payload.recursive
+
+    if (tagsChanged || recursionChanged) {
       await directory.save()
-      TaggingManager.bulkTagDirectory(directory)
+
+      if (recursionChanged) {
+        IndexingManager.indexFiles(directory)
+      }
+
+      if (tagsChanged) {
+        TaggingManager.bulkTagDirectory(directory)
+      }
     }
   }
 
@@ -146,7 +158,7 @@ export namespace DirectoryManager {
         })
       ])
 
-      const resultingLength = resultingSearch.length
+      const resultingLength = resultingSearch.filter((d) => !d.isDirectory()).length
 
       return {
         additions: Math.max(0, resultingLength - taggableCount),

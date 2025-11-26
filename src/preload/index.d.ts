@@ -3,6 +3,11 @@ import { ElectronAPI } from '@electron-toolkit/preload'
 type CallbackFunc<Payload> = (callback: (values: Payload) => void) => () => void
 type Result<Payload> = Promise<Payload | Impart.Error>
 
+interface ConfigItems {
+  previousVersion: string
+  autoUpdatingEnabled: boolean
+}
+
 declare global {
   namespace Impart {
     interface Dimensions {
@@ -63,6 +68,7 @@ declare global {
       stackId?: number
       onlyHidden?: boolean
       onlyFiles?: boolean
+      allowPrivate?: boolean
     }
 
     //~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
@@ -74,6 +80,13 @@ declare global {
       label?: string
       tagOrder: number
       color?: string
+      isPrivate: boolean
+    }
+
+    interface TagModel {
+      label?: string
+      color?: string
+      isPrivate: boolean
     }
 
     interface TagGroup {
@@ -99,6 +112,13 @@ declare global {
 
   interface Window {
     electron: ElectronAPI
+
+    commonApi: {
+      getConfigItem: <Key extends keyof ConfigItems>(
+        key: Key
+      ) => Promise<{ result: ConfigItems[Key] }>
+      setConfigItem: <Key extends keyof ConfigItems>(key: Key, value: ConfigItems[Key]) => void
+    }
 
     fileApi: {
       openFile: (indexableId: number) => void
@@ -148,13 +168,13 @@ declare global {
       deleteGroup: (id: number) => Result<true>
 
       createTag: (groupId: number) => Result<Impart.Tag>
-      editTag: (tagId: number, label?: string, color?: string) => Result<Impart.Tag>
+      editTag: (tagId: number, model: Impart.TagModel) => Result<Impart.Tag>
       reorderTags: (moveId: number, toGroupId: number, beforeTagId: number | 'end') => Result<void>
       deleteTag: (id: number) => Result<true>
     }
 
     indexApi: {
-      indexAll: () => Promise<void>
+      indexAll: () => Result<bool>
       selectDirectory: () => Promise<string | undefined>
       updateDirectories: (payload: Impart.Directory[]) => Result<void>
       calculateTotalIndexChanges: (
@@ -169,3 +189,4 @@ declare global {
     }
   }
 }
+

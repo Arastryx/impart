@@ -10,12 +10,14 @@ import { Thumbnail } from './entities/Thumbnail'
 import { TaggableStack } from './entities/TaggableStack'
 import { APP_DIR, DEV_DIR } from '../common/appDir'
 import { InitDatabase1730761117956 } from './migrations/1730761117956-InitDatabase'
+import { NsfwTags1746577567101 } from './migrations/1746577567101-nsfwTags'
+import { NsfwPrivateRename1763407600185 } from './migrations/1763407600185-nsfwPrivateRename'
 
 const path = app.getPath('appData')
 
 export const AppDataSource = new DataSource({
   type: 'better-sqlite3',
-  database: `${path}/impart/${app.isPackaged ? APP_DIR : DEV_DIR}/db.sqlite`,
+  database: `${path}/impart/${import.meta.env.DEV ? DEV_DIR : APP_DIR}/db.sqlite`,
   entities: [
     Directory,
     Tag,
@@ -26,8 +28,9 @@ export const AppDataSource = new DataSource({
     TaggableStack,
     Thumbnail
   ],
-  migrations: [InitDatabase1730761117956],
+  migrations: [InitDatabase1730761117956, NsfwTags1746577567101, NsfwPrivateRename1763407600185],
   migrationsTableName: '__migrations',
   migrationsRun: true,
   logging: app.isPackaged ? false : ['error', 'warn', 'info']
 })
+

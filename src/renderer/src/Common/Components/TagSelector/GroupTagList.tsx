@@ -1,4 +1,4 @@
-import { Box, BoxProps, Grid2 as Grid, IconButton, Stack, styled } from '@mui/material'
+import { Box, BoxProps, Grid, IconButton, Stack, styled } from '@mui/material'
 import { group } from 'console'
 import React from 'react'
 import { Draggable } from '../DragAndDrop'
@@ -7,6 +7,7 @@ import { satisfiesFilter } from './satisfiesFilter'
 import AddIcon from '@mui/icons-material/Add'
 import { Tag } from '../Tag'
 import { CenteredOverlay } from '../CenteredOverlay'
+import { useTaggables } from '@renderer/EntityProviders/TaggableProvider'
 
 const DropIndicator = styled(Box, { shouldForwardProp: (prop) => prop !== 'showIndicator' })<
   BoxProps & { showIndicator: boolean }
@@ -41,11 +42,16 @@ export function GroupTagList({
   onExclude,
   filter
 }: GroupTagListProps) {
+  const {
+    fetchOptions: { allowPrivate }
+  } = useTaggables()
+
   return (
     <Grid container py={1} spacing={2}>
       {tags
         ?.slice()
         .filter((t) => satisfiesFilter(t, filter))
+        .filter((t) => allowPrivate || !t.isPrivate)
         .sort((a, b) => a.tagOrder - b.tagOrder)
         .map((t) => (
           <Grid key={t.id}>

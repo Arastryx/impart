@@ -20,14 +20,19 @@ export interface TaggableProviderProps {
 }
 
 const DEFAULT_ORDER_KEY = 'defaultOrder'
+const DEFAULT_PRIVATE_KEY = 'defaultPrivate'
 
 export function TaggableProvider({ children }: TaggableProviderProps) {
   const { isTaskRunning } = useTaskStatus()
 
   const [stackTrail, setStackTrail] = useState<Impart.TaggableStack[]>([])
-  const [fetchOptions, setFetchOptions] = usePartialState<Impart.FetchTaggablesOptions>(() => ({
-    order: (localStorage.getItem(DEFAULT_ORDER_KEY) as 'alpha' | 'date' | null) ?? 'alpha'
-  }))
+  const [fetchOptions, setFetchOptions] = usePartialState<Impart.FetchTaggablesOptions>(
+    () =>
+      ({
+        order: (localStorage.getItem(DEFAULT_ORDER_KEY) as 'alpha' | 'date' | null) ?? 'alpha',
+        allowPrivate: (localStorage.getItem(DEFAULT_PRIVATE_KEY) as boolean | null) ?? true
+      }) satisfies Impart.FetchTaggablesOptions
+  )
 
   const updateStackTrail = useCallback((stack: Impart.TaggableStack[]) => {
     setStackTrail(stack)
@@ -90,3 +95,4 @@ export function useTaggables() {
 
   return result
 }
+

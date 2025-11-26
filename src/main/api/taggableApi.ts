@@ -27,3 +27,4 @@ export function setupTaggableApi() {
       handleError(() => TaggableManager.associateImageWithFile(...params))
   )
 }
+

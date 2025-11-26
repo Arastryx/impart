@@ -8,17 +8,19 @@ import {
   Breadcrumbs,
   Chip,
   emphasize,
-  Popover
+  Tooltip,
+  CircularProgress
 } from '@mui/material'
-import { YearSelector } from './YearSelector'
 import { SortButtons } from './SortButtons'
 import { SearchBar } from '../../../Common/Components/SearchBar'
 import HomeIcon from '@mui/icons-material/HomeRounded'
 import { Droppable } from '@renderer/Common/Components/DragAndDrop/Droppable'
 import { useTaggables } from '@renderer/EntityProviders/TaggableProvider'
-import FilterIcon from '@mui/icons-material/FilterAltRounded'
-import { useRef, useState } from 'react'
-import { DirectorySelector } from './DirectorySelector'
+import { useRef } from 'react'
+import { GridFilter } from './GridFilter'
+import RefreshIcon from '@mui/icons-material/Refresh'
+import { useImpartIpcCall } from '@renderer/Common/Hooks/useImpartIpc'
+import { useNotification } from '@renderer/Common/Components/NotificationProvider'
 
 const ToolbarIconButton = styled(IconButton)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
@@ -52,11 +54,21 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
 
 export function GridActions({ stack, onStackChange }: GridActionsProps) {
   const {
-    fetchOptions: { search, year, directories },
+    fetchOptions: { search },
     setFetchOptions
   } = useTaggables()
 
-  const [showFilters, setShowFilters] = useState(false)
+  const { callIpc: indexAll, isLoading } = useImpartIpcCall(window.indexApi.indexAll, [])
+  const { sendInfo } = useNotification()
+
+  const reloadIndices = async () => {
+    const changesDetected = await indexAll()
+
+    if (!changesDetected) {
+      sendInfo('No file changes detected')
+    }
+  }
+
   const anchorRef = useRef<HTMLDivElement | null>(null)
 
   return (
@@ -73,51 +85,19 @@ export function GridActions({ stack, onStackChange }: GridActionsProps) {
           <SearchBar
             value={search}
             onChange={(v) => setFetchOptions({ search: v })}
-            endAdornment={
-              <>
-                {year && (
-                  <Chip
-                    label={year}
-                    size="small"
-                    onDelete={() => setFetchOptions({ year: undefined })}
-                  />
-                )}
-                {directories && directories.length > 0 && (
-                  <Chip
-                    label={
-                      directories.length === 1
-                        ? directories[0]
-                        : `${directories.length} Directories`
-                    }
-                    size="small"
-                    onDelete={() => setFetchOptions({ directories: undefined })}
-                  />
-                )}
-                <IconButton size="small" onClick={() => setShowFilters(true)}>
-                  <FilterIcon fontSize="inherit" />
-                </IconButton>
-                <Popover
-                  open={showFilters}
-                  onClose={() => setShowFilters(false)}
-                  anchorEl={anchorRef.current}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right'
-                  }}
-                  transformOrigin={{
-                    vertical: -10,
-                    horizontal: 'right'
-                  }}
-                >
-                  <Stack p={2} gap={1}>
-                    <YearSelector />
-                    <DirectorySelector />
-                  </Stack>
-                </Popover>
-              </>
-            }
+            endAdornment={<GridFilter anchorEl={anchorRef.current} />}
           />
         </Box>
+        {isLoading && <CircularProgress />}
+
+        {!isLoading && (
+          <Tooltip title="Refresh">
+            <ToolbarIconButton onClick={() => reloadIndices()}>
+              <RefreshIcon />
+            </ToolbarIconButton>
+          </Tooltip>
+        )}
+
         <SortButtons />
       </Stack>
       <Collapse in={stack.length > 0}>
