@@ -100,6 +100,12 @@ export function Patch1_2_0({}: Patch1_2_0Props) {
           Added a Refresh (<RefreshIcon fontSize="inherit" sx={{ verticalAlign: 'middle' }} />)
           button which re-indexes all directories and loads any changed files
         </Typography>
+        <Typography component="li">
+          Added several additional "No Items Found" images{' '}
+          <Typography variant="caption" component="span">
+            (Thanks to @Zelevai for ideas!)
+          </Typography>
+        </Typography>
         <Typography component="li">Updated About page</Typography>
 
         <Typography variant="body2" component={'li'} sx={{ mt: 1 }}>
