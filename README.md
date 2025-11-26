@@ -4,7 +4,7 @@
 
 # Impart
 
-An open-source, no AI, fully offline gallery organization tool (currently Windows only)!
+An open-source, no AI, fully offline gallery organization tool (currently Windows and Linux only)!
 
 - Tag your art however you want, with as many tags as you want
 - Organize files into stacks (and tag those too!)
@@ -19,11 +19,11 @@ Check out the [latest release](https://github.com/Arastryx/impart/releases/lates
 
 ## Contributing
 
-Impart is built on electron-vite using typescript react. As such, it can also be deployed on Unix or MacOS, but at this point, it's completely untested.
+Impart is built on electron-vite using typescript react. As such, it can also be deployed on MacOS, but at this point, it's completely untested.
 
 ### Requirements
 
-- Node v20.16.0 or greater **including Tools for Native Modules**
+- Node v22.19.0 or greater **including Tools for Native Modules**
   - If you have node but haven't installed native tools, you can refer to [this guide here](https://github.com/nodejs/node-gyp#on-windows) on how to set them up
 
 ### Running the app
@@ -33,3 +33,4 @@ Impart is built on electron-vite using typescript react. As such, it can also be
 3. (Optional) In separate terminals, run `npm run typewatch:web` and `npm run typewatch:node` for typescript error checking
 
 _Better readme pending!_
+
