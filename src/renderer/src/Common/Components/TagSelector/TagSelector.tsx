@@ -33,7 +33,7 @@ export function TagSelector({
   const { collapsedGroups, toggleGroupCollapse, expandAll, collapseAll } = useGroupCollapse()
   const { groups, reload, tags } = useTagGroups()
 
-  const { selectItem, itemIsSelected } = useMultiSelection(
+  const { selectItem: toggleSelection, itemIsSelected } = useMultiSelection(
     tags ?? [],
     selection ?? [],
     (s) => onSelectionChange && onSelectionChange(s),
@@ -41,7 +41,7 @@ export function TagSelector({
     { toggleMode: true }
   )
 
-  const { selectItem: excludeItem, itemIsSelected: itemIsExcluded } = useMultiSelection(
+  const { selectItem: toggleExclusion, itemIsSelected: itemIsExcluded } = useMultiSelection(
     tags ?? [],
     exclusion ?? [],
     (s) => onExclusionChange && onExclusionChange(s),
@@ -97,15 +97,15 @@ export function TagSelector({
           collapsedGroups={collapsedGroups}
           onToggleCollapse={toggleGroupCollapse}
           onSelect={(t) => {
-            selectItem(t)
+            toggleSelection(t)
             if (itemIsExcluded(t)) {
-              excludeItem(t)
+              toggleExclusion(t)
             }
           }}
           onExclude={(t) => {
-            excludeItem(t)
+            toggleExclusion(t)
             if (itemIsSelected(t)) {
-              selectItem(t)
+              toggleSelection(t)
             }
           }}
         />
@@ -135,9 +135,9 @@ export function TagSelector({
             selection={selection}
             exclusion={explicitlyExcludedTags}
             includedExclusions={includedExclusionTags}
-            onClickSelected={selectItem}
-            onClickExcluded={excludeItem}
-            onClickIncludedExclusion={excludeItem}
+            onClickSelected={toggleSelection}
+            onClickExcluded={toggleExclusion}
+            onClickIncludedExclusion={toggleExclusion}
             onClear={() => {
               onSelectionChange && onSelectionChange([])
               onExclusionChange && onExclusionChange(tags?.filter((t) => t.excludeByDefault) ?? [])
