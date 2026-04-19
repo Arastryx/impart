@@ -12,7 +12,7 @@ import { APP_DIR, DEV_DIR } from '../common/appDir'
 import { InitDatabase1730761117956 } from './migrations/1730761117956-InitDatabase'
 import { NsfwTags1746577567101 } from './migrations/1746577567101-nsfwTags'
 import { NsfwPrivateRename1763407600185 } from './migrations/1763407600185-nsfwPrivateRename'
-import { DefaultExcluded1776607995921 } from './migrations/1776607995921-defaultExcluded'
+import { ExcludeByDefault1776607995921 } from './migrations/1776607995921-defaultExcluded'
 
 const path = app.getPath('appData')
 
@@ -33,7 +33,7 @@ export const AppDataSource = new DataSource({
     InitDatabase1730761117956,
     NsfwTags1746577567101,
     NsfwPrivateRename1763407600185,
-    DefaultExcluded1776607995921
+    ExcludeByDefault1776607995921
   ],
   migrationsTableName: '__migrations',
   migrationsRun: true,

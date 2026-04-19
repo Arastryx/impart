@@ -59,12 +59,28 @@ export function Tag({ tag, selected, editable, onSelect, onExclude, size, exclud
                 await window.tagApi.editTag(tag.id, {
                   color: tag.color,
                   label: tag.label,
-                  isPrivate: !tag.isPrivate
+                  isPrivate: !tag.isPrivate,
+                  excludeByDefault: tag.excludeByDefault
                 })
 
                 reload()
               }
             },
+            {
+              label: 'Exclude by Default',
+              isChecked: tag.excludeByDefault,
+              onClick: async () => {
+                await window.tagApi.editTag(tag.id, {
+                  color: tag.color,
+                  label: tag.label,
+                  isPrivate: tag.isPrivate,
+                  excludeByDefault: !tag.excludeByDefault
+                })
+
+                reload()
+              }
+            },
+            'divider',
             {
               icon: <DeleteIcon />,
               label: 'Delete',
