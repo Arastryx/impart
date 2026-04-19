@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo } from 'react'
 import { useImpartIpcData } from '@renderer/Common/Hooks/useImpartIpc'
+import { CircularProgress } from '@mui/material'
 
 interface TagData {
   groups?: Impart.TagGroup[]
@@ -18,6 +19,10 @@ export function TagProvider({ children }: TagProviderProps) {
   const { data: groups, isLoading, reload } = useImpartIpcData(() => window.tagApi.getGroups(), [])
 
   const tags = useMemo(() => groups?.map((g) => g.tags ?? []).flat(), [groups])
+
+  if (isLoading) {
+    return <CircularProgress />
+  }
 
   return (
     <TagContext.Provider value={{ groups, tags, isLoading, reload }}>

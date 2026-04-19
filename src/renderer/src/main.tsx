@@ -17,8 +17,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <NotificationProvider>
       <TaskStatusProvider>
         <DirectoryProvider>
-          <TaggableProvider>
-            <TagProvider>
+          <TagProvider>
+            <TaggableProvider>
               <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <ActiveContextMenuProvider>
@@ -27,8 +27,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                   </ConfirmationDialogProvider>
                 </ActiveContextMenuProvider>
               </ThemeProvider>
-            </TagProvider>
-          </TaggableProvider>
+            </TaggableProvider>
+          </TagProvider>
         </DirectoryProvider>
       </TaskStatusProvider>
     </NotificationProvider>

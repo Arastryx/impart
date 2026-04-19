@@ -20,6 +20,10 @@ export interface TagSelectorProps {
   onExclusionChange?: (selection: Impart.Tag[]) => void
 }
 
+function anyHaveValue<T>(...arrays: (T[] | undefined)[]) {
+  return arrays.some((t) => (t?.length ?? 0) > 0)
+}
+
 export function TagSelector({
   selection,
   exclusion,
@@ -46,6 +50,14 @@ export function TagSelector({
   )
 
   const [filter, setFilter] = useState<string>()
+
+  const explicitlyExcludedTags = exclusion?.filter((t) => !t.excludeByDefault)
+  const includedExclusionTags = tags?.filter(
+    (t) =>
+      t.excludeByDefault &&
+      !exclusion?.some((e) => e.id == t.id) &&
+      !selection?.some((s) => s.id == t.id)
+  )
 
   if (groups?.length === 0) {
     return <EmptyTagGroups />
@@ -116,17 +128,19 @@ export function TagSelector({
           )}
         />
       </Stack>
-      {((selection?.length ?? 0) > 0 || (exclusion?.length ?? 0) > 0) && (
+      {anyHaveValue(selection, explicitlyExcludedTags, includedExclusionTags) && (
         <Box position={'sticky'} bgcolor="background.paper" bottom={0} pb={2}>
           <Divider />
           <TagSelection
             selection={selection}
-            exclusion={exclusion}
-            onDeselect={selectItem}
-            onInclude={excludeItem}
+            exclusion={explicitlyExcludedTags}
+            includedExclusions={includedExclusionTags}
+            onClickSelected={selectItem}
+            onClickExcluded={excludeItem}
+            onClickIncludedExclusion={excludeItem}
             onClear={() => {
               onSelectionChange && onSelectionChange([])
-              onExclusionChange && onExclusionChange([])
+              onExclusionChange && onExclusionChange(tags?.filter((t) => t.excludeByDefault) ?? [])
             }}
           />
         </Box>
