@@ -70,6 +70,8 @@ export function Tag({ tag, selected, editable, onSelect, onExclude, size, exclud
               label: 'Exclude by Default',
               isChecked: tag.excludeByDefault,
               onClick: async () => {
+                const isExcluding = !tag.excludeByDefault
+
                 await window.tagApi.editTag(tag.id, {
                   color: tag.color,
                   label: tag.label,
@@ -77,7 +79,11 @@ export function Tag({ tag, selected, editable, onSelect, onExclude, size, exclud
                   excludeByDefault: !tag.excludeByDefault
                 })
 
-                reload()
+                await reload()
+
+                if (isExcluding != excluded) {
+                  onExclude?.()
+                }
               }
             },
             'divider',

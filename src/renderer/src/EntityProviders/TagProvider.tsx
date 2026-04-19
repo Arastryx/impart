@@ -6,7 +6,7 @@ interface TagData {
   groups?: Impart.TagGroup[]
   tags?: Impart.Tag[]
   isLoading: boolean
-  reload: () => void
+  reload: () => Promise<void>
 }
 
 const TagContext = createContext<TagData | null>(null)
