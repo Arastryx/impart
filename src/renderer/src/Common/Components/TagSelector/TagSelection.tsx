@@ -1,8 +1,6 @@
 import { Box, Stack, Typography, Button, Grid, Divider } from '@mui/material'
-import React from 'react'
 import { Tag } from '../Tag/Tag'
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOffRounded'
-import AddIcon from '@mui/icons-material/Add'
 
 export interface TagSelectionProps {
   selection?: Impart.Tag[]
