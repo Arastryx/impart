@@ -20,10 +20,6 @@ export function TagProvider({ children }: TagProviderProps) {
 
   const tags = useMemo(() => groups?.map((g) => g.tags ?? []).flat(), [groups])
 
-  if (isLoading) {
-    return <CircularProgress />
-  }
-
   return (
     <TagContext.Provider value={{ groups, tags, isLoading, reload }}>
       {children}

@@ -31,10 +31,12 @@ export function TagSelection({
           Clear all
         </Button>
       </Stack>
-      <Stack gap={1}>
+      <Stack>
         {selection && selection.length > 0 && (
-          <>
-            <Divider>Selected</Divider>
+          <Box>
+            <Divider variant="middle">
+              <Typography variant="caption">Selected</Typography>
+            </Divider>
             <Grid container spacing={2}>
               {selection.map((t) => (
                 <Grid key={t.id}>
@@ -42,11 +44,13 @@ export function TagSelection({
                 </Grid>
               ))}
             </Grid>
-          </>
+          </Box>
         )}
         {exclusion && exclusion.length > 0 && (
-          <>
-            <Divider>Excluded</Divider>
+          <Box>
+            <Divider variant="middle">
+              <Typography variant="caption">Excluded</Typography>
+            </Divider>
             <Grid container spacing={2}>
               {exclusion?.map((t) => (
                 <Grid key={t.id}>
@@ -54,11 +58,13 @@ export function TagSelection({
                 </Grid>
               ))}
             </Grid>
-          </>
+          </Box>
         )}
         {includedExclusions && includedExclusions.length > 0 && (
-          <>
-            <Divider>Included</Divider>
+          <Box>
+            <Divider variant="middle">
+              <Typography variant="caption">Included</Typography>
+            </Divider>
             <Grid container spacing={2}>
               {includedExclusions?.map((t) => (
                 <Grid key={t.id}>
@@ -69,7 +75,7 @@ export function TagSelection({
                 </Grid>
               ))}
             </Grid>
-          </>
+          </Box>
         )}
       </Stack>
     </Stack>
