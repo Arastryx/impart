@@ -21,6 +21,9 @@ export class Tag extends BaseEntity {
   @Column({ nullable: false, default: false })
   isPrivate: boolean
 
+  @Column({ nullable: false, default: false })
+  defaultExcluded: boolean
+
   @ManyToOne(() => TagGroup, (g) => g.tags, { nullable: false, onDelete: 'CASCADE' })
   group?: TagGroup
 
