@@ -14,6 +14,7 @@ import { ImpartTask, TaskType } from '../task/impartTask'
 import { ThumbnailManager } from './thumbnailManager'
 import { zap } from '../common/zap'
 import { TaggingManager } from '../tagging/taggingManager'
+import { store } from '../config'
 
 export namespace IndexingManager {
   let isIndexing = false
@@ -226,6 +227,10 @@ export namespace IndexingManager {
 
       console.log('Associating indexed image with: ', possibleSourceFiles[0].fileIndex.path)
       image.source = possibleSourceFiles[0]
+
+      if (image.tags.length == 0 && store.get('applyTagsOnSourceAssociation')) {
+        image.tags = possibleSourceFiles[0].tags
+      }
 
       await image.save()
     }
