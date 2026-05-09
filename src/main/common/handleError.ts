@@ -4,7 +4,7 @@ export interface ImpartError {
   name?: string
 }
 
-export async function handleError<T>(func: () => Promise<T>): Promise<T | ImpartError> {
+export async function handleError<T>(func: () => T | Promise<T>): Promise<T | ImpartError> {
   try {
     return await func()
   } catch (e) {

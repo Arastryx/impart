@@ -1,5 +1,5 @@
 import { Stack, Box, Switch, Skeleton, Typography } from '@mui/material'
-import { useImpartIpcData } from '@renderer/Common/Hooks/useImpartIpc'
+import { useImpartIpcCall, useImpartIpcData } from '@renderer/Common/Hooks/useImpartIpc'
 import React, { useEffect, useState } from 'react'
 
 //Acquired from https://stackoverflow.com/questions/50851263/how-do-i-require-a-keyof-to-be-for-a-property-of-a-specific-type
@@ -14,6 +14,8 @@ export interface ToggleSettingProps {
 export function ToggleSetting({ storeKey, title, subtitle }: ToggleSettingProps) {
   const [checked, setChecked] = useState(true)
 
+  const { callIpc: setConfigItem } = useImpartIpcCall(window.commonApi.setConfigItem, [])
+
   const { data: actualSettingValue, isLoading } = useImpartIpcData(
     () => window.commonApi.getConfigItem(storeKey),
     [storeKey]
@@ -27,7 +29,7 @@ export function ToggleSetting({ storeKey, title, subtitle }: ToggleSettingProps)
 
   const update = (checked: boolean) => {
     setChecked(checked)
-    window.commonApi.setConfigItem(storeKey, checked)
+    setConfigItem(storeKey, checked)
   }
 
   return (

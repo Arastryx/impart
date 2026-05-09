@@ -114,8 +114,11 @@ declare global {
     commonApi: {
       getConfigItem: <Key extends keyof ConfigItems>(
         key: Key
-      ) => Promise<{ result: Impart.ConfigItems[Key] }>
-      setConfigItem: <Key extends keyof ConfigItems>(key: Key, value: ConfigItems[Key]) => void
+      ) => Result<{ result: Impart.ConfigItems[Key] }>
+      setConfigItem: <Key extends keyof ConfigItems>(
+        key: Key,
+        value: ConfigItems[Key]
+      ) => Result<void>
     }
 
     fileApi: {
