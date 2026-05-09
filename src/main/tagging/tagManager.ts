@@ -1,4 +1,5 @@
 import { arrayMoveImmutable } from '../common/arrayMove'
+import { AppDataSource } from '../database/database'
 import { Tag } from '../database/entities/Tag'
 import { TagGroup } from '../database/entities/TagGroup'
 
@@ -72,7 +73,12 @@ export namespace TagManager {
 
   export async function deleteGroup(id: number) {
     const groupEntity = await TagGroup.findOneByOrFail({ id })
-    await groupEntity.remove()
+
+    await AppDataSource.transaction(async (manager) => {
+      await Promise.all(groupEntity.tags.map((t) => manager.remove(t)))
+      await manager.remove(groupEntity)
+    })
+
     return true
   }
 
