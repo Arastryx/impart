@@ -19,6 +19,7 @@ export function TagEditor({ tag, show, onEdit, onClose }: TagEditorProps) {
   const edit = async () => {
     await window.tagApi.editTag(tag.id, {
       isPrivate: tag.isPrivate,
+      excludeByDefault: tag.isPrivate,
       color: internalColor,
       label: internalLabel
     })

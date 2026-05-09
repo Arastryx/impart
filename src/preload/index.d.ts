@@ -82,13 +82,10 @@ declare global {
       tagOrder: number
       color?: string
       isPrivate: boolean
+      excludeByDefault: boolean
     }
 
-    interface TagModel {
-      label?: string
-      color?: string
-      isPrivate: boolean
-    }
+    type TagModel = Omit<Tag, 'id' | 'tagOrder'>
 
     interface TagGroup {
       id: number

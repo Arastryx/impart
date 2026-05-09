@@ -101,14 +101,19 @@ export namespace TagManager {
     label?: string
     color?: string
     isPrivate: boolean
+    excludeByDefault: boolean
   }
 
-  export async function editTag(tagId: number, { label, color, isPrivate }: TagModel) {
+  export async function editTag(
+    tagId: number,
+    { label, color, isPrivate, excludeByDefault }: TagModel
+  ) {
     const tagEntity = await Tag.findOneByOrFail({ id: tagId })
 
     tagEntity.label = label
     tagEntity.color = color
     tagEntity.isPrivate = isPrivate
+    tagEntity.excludeByDefault = excludeByDefault
 
     await tagEntity.save()
 
