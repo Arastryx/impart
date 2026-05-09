@@ -9,6 +9,7 @@ interface Config {
   'window.maximized': boolean
   previousVersion: string
   autoUpdatingEnabled: boolean
+  applyTagsOnSourceAssociation: boolean
 }
 
 const schema: Schema<Config> = {
@@ -19,6 +20,9 @@ const schema: Schema<Config> = {
   'window.maximized': {},
   previousVersion: {},
   autoUpdatingEnabled: {
+    default: true
+  },
+  applyTagsOnSourceAssociation: {
     default: true
   }
 }

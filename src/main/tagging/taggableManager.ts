@@ -2,6 +2,7 @@ import { In, SelectQueryBuilder } from 'typeorm'
 import { Taggable } from '../database/entities/Taggable'
 import { TaggableImage } from '../database/entities/TaggableImage'
 import { TaggableFile } from '../database/entities/TaggableFile'
+import { store } from '../config'
 
 export interface FetchTaggablesOptions {
   tagIds?: number[]
@@ -155,6 +156,11 @@ export namespace TaggableManager {
     await Promise.all(
       images.map(async (i) => {
         i.source = file
+
+        if (i.tags.length == 0 && store.get('applyTagsOnSourceAssociation')) {
+          i.tags = file.tags
+        }
+
         await i.save()
       })
     )

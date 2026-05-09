@@ -3,13 +3,14 @@ import { ElectronAPI } from '@electron-toolkit/preload'
 type CallbackFunc<Payload> = (callback: (values: Payload) => void) => () => void
 type Result<Payload> = Promise<Payload | Impart.Error>
 
-interface ConfigItems {
-  previousVersion: string
-  autoUpdatingEnabled: boolean
-}
-
 declare global {
   namespace Impart {
+    interface ConfigItems {
+      previousVersion: string
+      autoUpdatingEnabled: boolean
+      applyTagsOnSourceAssociation: boolean
+    }
+
     interface Dimensions {
       width: number
       height: number
@@ -113,8 +114,11 @@ declare global {
     commonApi: {
       getConfigItem: <Key extends keyof ConfigItems>(
         key: Key
-      ) => Promise<{ result: ConfigItems[Key] }>
-      setConfigItem: <Key extends keyof ConfigItems>(key: Key, value: ConfigItems[Key]) => void
+      ) => Result<{ result: Impart.ConfigItems[Key] }>
+      setConfigItem: <Key extends keyof ConfigItems>(
+        key: Key,
+        value: ConfigItems[Key]
+      ) => Result<void>
     }
 
     fileApi: {
