@@ -19,27 +19,30 @@ export function Updates({ onShowPatchNotes }: UpdatesProps) {
           Show Patch Notes
         </Button>
       </Stack>
-      <ToggleSetting
-        storeKey="autoUpdatingEnabled"
-        title="Enable Auto Updating"
-        subtitle={
-          <>
-            Auto-updating takes place whenever the app starts up. If disabled, updates can always be
-            installed the conventional way (downloading them from{' '}
-            <a href="https://arastryx.itch.io/impart" target="_blank">
-              Itch.io
-            </a>{' '}
-            or{' '}
-            <a href="https://github.com/Arastryx/impart/releases" target="_blank">
-              GitHub
-            </a>
-            ).{' '}
-            <Typography variant="caption" component="span" color="primary.light">
-              TODO: Implement fancy "Check For Updates" button and so on
-            </Typography>
-          </>
-        }
-      />
+      <Stack gap={2}>
+        <ToggleSetting
+          storeKey="autoUpdatingEnabled"
+          title="Enable Auto Updating"
+          subtitle={
+            <>
+              Auto-updating takes place whenever the app starts up. If disabled, updates can always
+              be installed the conventional way (downloading them from{' '}
+              <a href="https://arastryx.itch.io/impart" target="_blank">
+                Itch.io
+              </a>{' '}
+              or{' '}
+              <a href="https://github.com/Arastryx/impart/releases" target="_blank">
+                GitHub
+              </a>
+              ).{' '}
+              <Typography variant="caption" component="span" color="primary.light">
+                TODO: Implement fancy "Check For Updates" button and so on
+              </Typography>
+            </>
+          }
+        />
+        <ToggleSetting storeKey="showPatchNotesOnUpdate" title="Show patch notes on update" />
+      </Stack>
     </Box>
   )
 }

@@ -27,8 +27,6 @@ export function Impart({}: ImpartProps) {
   const [currentModal, setCurrentModal] = useState<ImpartModal | null>(null)
   const [selection, setSelection] = useState<Impart.Taggable[]>([])
 
-  useHotkeys('escape', () => setCurrentModal(null))
-
   const { reload: fetchTaggables } = useTaggables()
 
   const { show, setShow } = useShowPatchNotes()

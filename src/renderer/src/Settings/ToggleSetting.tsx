@@ -9,9 +9,10 @@ export interface ToggleSettingProps {
   storeKey: BooleanKeys<Impart.ConfigItems>
   title: string
   subtitle?: React.ReactNode
+  small?: boolean
 }
 
-export function ToggleSetting({ storeKey, title, subtitle }: ToggleSettingProps) {
+export function ToggleSetting({ storeKey, title, subtitle, small }: ToggleSettingProps) {
   const [checked, setChecked] = useState(true)
 
   const { callIpc: setConfigItem } = useImpartIpcCall(window.commonApi.setConfigItem, [])
@@ -27,6 +28,14 @@ export function ToggleSetting({ storeKey, title, subtitle }: ToggleSettingProps)
     }
   }, [actualSettingValue])
 
+  useEffect(() => {
+    return window.commonApi.onConfigUpdated(({ key, value }) => {
+      if (key === storeKey) {
+        setChecked(value)
+      }
+    })
+  }, [])
+
   const update = (checked: boolean) => {
     setChecked(checked)
     setConfigItem(storeKey, checked)
@@ -34,14 +43,20 @@ export function ToggleSetting({ storeKey, title, subtitle }: ToggleSettingProps)
 
   return (
     <Stack direction="row" alignItems={'center'}>
-      <Box width={100} textAlign="center">
+      <Box width={small ? 60 : 80} textAlign="center">
         {!isLoading && (
-          <Switch checked={checked} onChange={(e) => update(e.currentTarget.checked)} />
+          <Switch
+            checked={checked}
+            onChange={(e) => update(e.currentTarget.checked)}
+            size={small ? 'small' : 'medium'}
+          />
         )}
         {isLoading && <Skeleton />}
       </Box>
       <Box flex={1}>
-        <Typography fontWeight="bold">{title}</Typography>
+        <Typography variant={small ? 'body2' : 'body1'} fontWeight="bold">
+          {title}
+        </Typography>
         <Typography variant="body2">{subtitle}</Typography>
       </Box>
     </Stack>

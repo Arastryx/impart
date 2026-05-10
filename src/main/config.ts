@@ -10,6 +10,7 @@ interface Config {
   previousVersion: string
   autoUpdatingEnabled: boolean
   applyTagsOnSourceAssociation: boolean
+  showPatchNotesOnUpdate: boolean
 }
 
 const schema: Schema<Config> = {
@@ -23,6 +24,9 @@ const schema: Schema<Config> = {
     default: true
   },
   applyTagsOnSourceAssociation: {
+    default: true
+  },
+  showPatchNotesOnUpdate: {
     default: true
   }
 }

@@ -1,8 +1,9 @@
-import { Dialog, DialogContent, DialogTitle, Divider, Stack } from '@mui/material'
+import { Dialog, DialogContent, DialogTitle, Divider, Stack, Typography } from '@mui/material'
 import { useImpartIpcData } from '@renderer/Common/Hooks/useImpartIpc'
 import React, { useEffect, useState } from 'react'
 import { Patch1_2_0 } from './Patches/Patch1_2_0'
 import { PatchOld } from './Patches/PatchOld'
+import { ToggleSetting } from '@renderer/Settings/ToggleSetting'
 
 export interface PatchNotesProps {
   show: boolean
@@ -12,7 +13,12 @@ export interface PatchNotesProps {
 export function PatchNotes({ show, onClose }: PatchNotesProps) {
   return (
     <Dialog open={show} onClose={onClose} maxWidth="xl" fullWidth>
-      <DialogTitle variant="h2">Patch Notes</DialogTitle>
+      <DialogTitle>
+        <Stack direction="row" justifyContent={'space-between'} alignItems={'flex-start'}>
+          <Typography variant="h2">Patch Notes</Typography>
+          <ToggleSetting storeKey="showPatchNotesOnUpdate" title="Show on update" small />
+        </Stack>
+      </DialogTitle>
       <DialogContent>
         <Stack gap={5} divider={<Divider />}>
           <Patch1_2_0 />
