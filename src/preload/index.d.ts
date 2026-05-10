@@ -136,6 +136,7 @@ declare global {
       getAllTaggableYears: () => Result<number[]>
       setHidden: (ids: number[], hidden: boolean) => Result<void>
       associateImageWithFile: (imageIds: number[], fileId: number) => Result<void>
+      detachSourceFile: (imageIds: number[]) => Result<void>
     }
 
     stackApi: {

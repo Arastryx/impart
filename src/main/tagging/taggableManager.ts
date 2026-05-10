@@ -176,5 +176,16 @@ export namespace TaggableManager {
       })
     )
   }
+
+  export async function detachSourceFile(imageIds: number[]) {
+    const images = await TaggableImage.findBy({ id: In(imageIds) })
+
+    await Promise.all(
+      images.map(async (i) => {
+        i.source = null
+        await i.save()
+      })
+    )
+  }
 }
 
