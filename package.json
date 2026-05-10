@@ -101,6 +101,9 @@
         }
       ]
     },
+    "nsis": {
+      "deleteAppDataOnUninstall": true
+    },
     "linux": {
       "category": "Graphics",
       "publish": [
@@ -114,3 +117,4 @@
     }
   }
 }
+
