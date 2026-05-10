@@ -4,6 +4,8 @@ import { TaggableImage } from '../database/entities/TaggableImage'
 import { TaggableFile } from '../database/entities/TaggableFile'
 import { store } from '../config'
 
+type SourceFileFilter = 'only' | 'all' | 'unassociated' | 'onlyUnassociated' | 'none'
+
 export interface FetchTaggablesOptions {
   tagIds?: number[]
   excludedTagIds?: number[]
@@ -13,55 +15,64 @@ export interface FetchTaggablesOptions {
   directories?: string[]
   stackId?: number
   onlyHidden?: boolean
-  onlyFiles?: boolean
   allowPrivate?: boolean
+  sourceFiles?: SourceFileFilter
 }
 
 export namespace TaggableManager {
   export async function getTaggables(options?: FetchTaggablesOptions) {
-    let query = (options?.onlyFiles ? TaggableFile : Taggable)
+    let query = (
+      options?.sourceFiles == 'only' || options?.sourceFiles == 'onlyUnassociated'
+        ? TaggableFile
+        : options?.sourceFiles == 'none'
+          ? TaggableImage
+          : Taggable
+    )
       .createQueryBuilder('files')
       .setFindOptions({
         loadEagerRelations: true
       })
 
-    if (options) {
-      const { tagIds, order, search, year, excludedTagIds, directories, allowPrivate } = options
-      if (tagIds && tagIds.length > 0) {
-        applyTags(query, tagIds)
-      }
+    if (options?.tagIds && options.tagIds.length > 0) {
+      applyTags(query, options.tagIds)
+    }
 
-      if (excludedTagIds && excludedTagIds.length > 0) {
-        applyExcludedTags(query, excludedTagIds)
-      }
+    if (options?.excludedTagIds && options.excludedTagIds.length > 0) {
+      applyExcludedTags(query, options.excludedTagIds)
+    }
 
-      if (order) {
-        applyOrder(query, order)
-      }
+    if (options?.order) {
+      applyOrder(query, options.order)
+    }
 
-      if (search && search != '') {
-        applySearch(query, search)
-      }
+    if (options?.search && options.search != '') {
+      applySearch(query, options.search)
+    }
 
-      if (year) {
-        query.andWhere("strftime('%Y', files.dateModified) = :year", { year: year.toString() })
-      }
+    if (options?.year) {
+      query.andWhere("strftime('%Y', files.dateModified) = :year", {
+        year: options.year.toString()
+      })
+    }
 
-      if (directories && directories.length > 0) {
-        query.andWhere('files.directory IN (:...directories)', { directories })
-      }
+    if (options?.directories && options.directories.length > 0) {
+      query.andWhere('files.directory IN (:...directories)', { directories: options.directories })
+    }
 
-      if (!allowPrivate) {
-        query.andWhere(
-          `files.id NOT IN (SELECT taggable.id
+    if (!options?.allowPrivate) {
+      query.andWhere(
+        `files.id NOT IN (SELECT taggable.id
             FROM taggable
             INNER JOIN taggable_tags_tag AS relation ON taggable.id = relation.taggableId
             INNER JOIN tag ON relation.tagId = tag.id AND tag.isPrivate = 1)`
-        )
-      }
+      )
     }
 
-    if (!options?.onlyFiles) {
+    if (
+      options?.sourceFiles == null ||
+      options.sourceFiles == 'unassociated' ||
+      options.sourceFiles == 'onlyUnassociated'
+    ) {
       query.leftJoin('files.images', 'associatedImages').andWhere('associatedImages.id IS NULL')
     }
 

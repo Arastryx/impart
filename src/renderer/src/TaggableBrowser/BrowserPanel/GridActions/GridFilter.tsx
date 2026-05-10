@@ -4,6 +4,7 @@ import { useTaggables } from '@renderer/EntityProviders/TaggableProvider'
 import FilterIcon from '@mui/icons-material/FilterAltRounded'
 import { useState } from 'react'
 import { DirectorySelector } from './DirectorySelector'
+import { SourceVisibilitySelector } from './SourceVisibilitySelector'
 
 export interface GridFilterProps {
   anchorEl: HTMLDivElement | null
@@ -44,9 +45,10 @@ export function GridFilter({ anchorEl }: GridFilterProps) {
           horizontal: 'right'
         }}
       >
-        <Stack p={2} gap={1}>
+        <Stack p={2} gap={1.5}>
           <YearSelector />
           <DirectorySelector />
+          <SourceVisibilitySelector />
         </Stack>
       </Popover>
     </>
