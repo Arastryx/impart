@@ -18,12 +18,12 @@ export function useShowPatchNotes() {
     if (
       !loadingVersion &&
       !loadingShowPatchNotes &&
-      showPatchNotesOnUpdate &&
+      showPatchNotesOnUpdate?.result &&
       previousVersion?.result != import.meta.env.PACKAGE_VERSION
     ) {
       setShow(true)
     }
-  }, [previousVersion])
+  }, [previousVersion, loadingVersion, showPatchNotesOnUpdate, loadingShowPatchNotes])
 
   return { show, setShow }
 }
