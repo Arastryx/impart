@@ -10,10 +10,25 @@ export interface GridFilterProps {
   anchorEl: HTMLDivElement | null
 }
 
+function getSourceFilterLabel(filter: Impart.SourceFileFilter) {
+  switch (filter) {
+    case 'only':
+      return 'Only Non-Image Files'
+    case 'all':
+      return 'Including All Non-Image Files'
+    case 'onlyUnassociated':
+      return 'Only Unassociated Non-Image Files'
+    case 'none':
+      return 'Excluding Non-Image Files'
+  }
+
+  return 'Unkonwn Non-Image File Filter'
+}
+
 export function GridFilter({ anchorEl }: GridFilterProps) {
   const [showFilters, setShowFilters] = useState(false)
   const {
-    fetchOptions: { year, directories },
+    fetchOptions: { year, directories, sourceFiles },
     setFetchOptions
   } = useTaggables()
 
@@ -27,6 +42,13 @@ export function GridFilter({ anchorEl }: GridFilterProps) {
           label={directories.length === 1 ? directories[0] : `${directories.length} Directories`}
           size="small"
           onDelete={() => setFetchOptions({ directories: undefined })}
+        />
+      )}
+      {sourceFiles != undefined && sourceFiles != 'unassociated' && (
+        <Chip
+          label={getSourceFilterLabel(sourceFiles)}
+          size="small"
+          onDelete={() => setFetchOptions({ sourceFiles: undefined })}
         />
       )}
       <IconButton size="small" onClick={() => setShowFilters(true)}>
