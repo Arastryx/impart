@@ -146,10 +146,29 @@ export function useTaggableContextMenuOptions(
     {
       icon: <LinkOffIcon />,
       label: 'Detach Source File',
-      hide: !selection.some(isTaggableImage),
+      hide:
+        selection.some((s) => !isTaggableImage(s)) ||
+        selection.filter(isTaggableImage).every((s) => s.source == null),
       onClick: async () => {
-        await detachSourceFile(selection.filter(isTaggableImage).map((s) => s.id))
-        reload()
+        const imagesWithSource = selection.filter(isTaggableImage).filter((s) => s.source != null)
+
+        if (imagesWithSource.length == 1) {
+          await detachSourceFile([imagesWithSource[0].id])
+          reload()
+        } else {
+          confirm(
+            {
+              title: 'Detach Source Files?',
+              body: `This will detach the source files from ${imagesWithSource.length} images`,
+              confirmIcon: <LinkOffIcon />,
+              confirmText: 'Unlink'
+            },
+            async () => {
+              await detachSourceFile(selection.filter(isTaggableImage).map((s) => s.id))
+              reload()
+            }
+          )
+        }
       }
     },
     'divider',
