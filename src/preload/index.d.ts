@@ -9,6 +9,7 @@ declare global {
       previousVersion: string
       autoUpdatingEnabled: boolean
       applyTagsOnSourceAssociation: boolean
+      showPatchNotesOnUpdate: boolean
     }
 
     interface Dimensions {
@@ -112,13 +113,14 @@ declare global {
     electron: ElectronAPI
 
     commonApi: {
-      getConfigItem: <Key extends keyof ConfigItems>(
+      getConfigItem: <Key extends keyof Impart.ConfigItems>(
         key: Key
       ) => Result<{ result: Impart.ConfigItems[Key] }>
-      setConfigItem: <Key extends keyof ConfigItems>(
+      setConfigItem: <Key extends keyof Impart.ConfigItems>(
         key: Key,
-        value: ConfigItems[Key]
+        value: Impart.ConfigItems[Key]
       ) => Result<void>
+      onConfigUpdated: CallbackFunc<{ key: string; value: any }>
     }
 
     fileApi: {
