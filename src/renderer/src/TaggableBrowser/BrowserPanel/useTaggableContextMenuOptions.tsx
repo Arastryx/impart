@@ -143,6 +143,7 @@ export function useTaggableContextMenuOptions(
           }
         )
     },
+    'divider',
     {
       icon: <LinkOffIcon />,
       label: 'Detach Source File',
@@ -171,7 +172,6 @@ export function useTaggableContextMenuOptions(
         }
       }
     },
-    'divider',
     {
       icon: <HideImageIcon />,
       label: 'Hide',
