@@ -69,9 +69,9 @@ export function ContextMenu({ options, render, disabled, ...boxProps }: ContextM
           }) satisfies PopoverVirtualElement
         }
       >
-        <ClickAwayListener onClickAway={() => closeMenu()}>
+        <ClickAwayListener onClickAway={closeMenu}>
           <Paper>
-            <ContextMenuList options={options} />
+            <ContextMenuList options={options} onClose={closeMenu} />
           </Paper>
         </ClickAwayListener>
       </BetterPopper>

@@ -60,6 +60,8 @@ declare global {
 
     type Taggable = TaggableImage | TaggableFile | TaggableStack
 
+    type SourceFileFilter = 'only' | 'all' | 'unassociated' | 'onlyUnassociated' | 'none'
+
     interface FetchTaggablesOptions {
       tagIds?: number[]
       excludedTagIds?: number[]
@@ -71,6 +73,7 @@ declare global {
       onlyHidden?: boolean
       onlyFiles?: boolean
       allowPrivate?: boolean
+      sourceFiles?: SourceFileFilter
     }
 
     //~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
@@ -133,6 +136,7 @@ declare global {
       getAllTaggableYears: () => Result<number[]>
       setHidden: (ids: number[], hidden: boolean) => Result<void>
       associateImageWithFile: (imageIds: number[], fileId: number) => Result<void>
+      detachSourceFile: (imageIds: number[]) => Result<void>
     }
 
     stackApi: {

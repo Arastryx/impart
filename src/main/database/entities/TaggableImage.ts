@@ -26,7 +26,7 @@ export class TaggableImage extends Taggable {
     eager: true,
     onDelete: 'SET NULL'
   })
-  source?: TaggableFile
+  source?: TaggableFile | null
 
   @OneToOne(() => Thumbnail, { nullable: true, cascade: true, onDelete: 'SET NULL' })
   @JoinColumn()
@@ -43,3 +43,4 @@ export class TaggableImage extends Taggable {
 export function isTaggableImage(t: Taggable): t is TaggableImage {
   return (t as TaggableImage).dimensions != null
 }
+

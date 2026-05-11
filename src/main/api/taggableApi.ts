@@ -26,5 +26,11 @@ export function setupTaggableApi() {
     (e, ...params: Parameters<typeof TaggableManager.associateImageWithFile>) =>
       handleError(() => TaggableManager.associateImageWithFile(...params))
   )
+
+  ipcMain.handle(
+    'taggable/detachSourceFile',
+    (e, ...params: Parameters<typeof TaggableManager.detachSourceFile>) =>
+      handleError(() => TaggableManager.detachSourceFile(...params))
+  )
 }
 
