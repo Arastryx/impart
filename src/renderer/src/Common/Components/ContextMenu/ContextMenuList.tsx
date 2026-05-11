@@ -38,7 +38,9 @@ export function ContextMenuList({ options, onClose }: ContextMenuListProps) {
               key={index}
               onClick={(e) => {
                 o.onClick && o.onClick()
-                onClose?.()
+                if (o.isChecked === undefined) {
+                  onClose?.()
+                }
                 e.stopPropagation()
               }}
               disabled={o.disabled}
