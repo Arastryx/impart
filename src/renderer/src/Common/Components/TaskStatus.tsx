@@ -21,11 +21,12 @@ export interface TaskStatusProps {}
 export function TaskStatus({}: TaskStatusProps) {
   const [showMenu, setShowMenu] = useState(false)
   const anchorRef = useRef<HTMLButtonElement>(null)
-  const { currentStep, stepCount, taskType, currentTask, taskCount } = useTaskStatus()
+  const { currentStep, taskCancelled, stepCount, taskType, currentTask, taskCount } =
+    useTaskStatus()
 
   const getTaskLabel = () => {
     if (!taskType) {
-      return 'Finished!'
+      return taskCancelled ? 'Cancelled' : 'Finished!'
     }
 
     switch (taskType) {
@@ -41,14 +42,17 @@ export function TaskStatus({}: TaskStatusProps) {
   return (
     <Box position="relative">
       <Stack gap={2} pt={1}>
-        <Box>
-          <Typography variant="body2">
-            Step {Math.min(currentTask + 1, taskCount)}/{taskCount}
-          </Typography>
-          {taskCount != 0 && (
-            <LinearProgress value={(currentTask / taskCount) * 100} variant="determinate" />
-          )}
-        </Box>
+        {!taskCancelled && (
+          <Box>
+            <Typography variant="body2">
+              Step {Math.min(currentTask + 1, taskCount)}/{taskCount}
+            </Typography>
+
+            {taskCount != 0 && (
+              <LinearProgress value={(currentTask / taskCount) * 100} variant="determinate" />
+            )}
+          </Box>
+        )}
         <Box>
           <Typography variant="body2">{getTaskLabel()}</Typography>
           {stepCount != 0 && (
@@ -68,7 +72,12 @@ export function TaskStatus({}: TaskStatusProps) {
         slotProps={{ list: { dense: true } }}
         sx={{ paddingX: '16px', '.MuiListItemIcon-root': { minWidth: '30px' } }}
       >
-        <MenuItem>
+        <MenuItem
+          onClick={() => {
+            window.indexApi.cancelTasks()
+            setShowMenu(false)
+          }}
+        >
           <ListItemIcon>
             <CancelIcon />
           </ListItemIcon>

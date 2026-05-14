@@ -12,6 +12,8 @@ export abstract class ImpartTask<T> {
   protected abstract prepare(): Promise<void>
   protected abstract performStep(item: T): Promise<void>
 
+  private canceled: boolean = false
+
   public async perform() {
     await this.prepare()
 
@@ -24,6 +26,13 @@ export abstract class ImpartTask<T> {
     await Promise.all(
       this.targets.map((item, index) =>
         delay(async () => {
+          //While it seems like it'd be nicer to just cancel the timeouts, I'm having trouble
+          // figuring out a way that wouldn't leave a dangling await. I feel like it's easier
+          // to just let the async functions naturally conclude
+          if (this.canceled) {
+            return
+          }
+
           const result = await handleError(() => this.performStep(item))
 
           if (result) {
@@ -36,5 +45,9 @@ export abstract class ImpartTask<T> {
     )
 
     taskMessenger.taskFinished()
+  }
+
+  public cancel() {
+    this.canceled = true
   }
 }
