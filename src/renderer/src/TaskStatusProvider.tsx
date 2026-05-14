@@ -3,6 +3,7 @@ import { useNotification } from './Common/Components/NotificationProvider'
 
 export interface TaskStatusData {
   isTaskRunning: boolean
+  taskCancelled: boolean
   taskType?: Impart.TaskType
   currentTask: number
   taskCount: number
@@ -18,6 +19,7 @@ export interface TaskStatusProviderProps {
 
 export function TaskStatusProvider({ children }: TaskStatusProviderProps) {
   const [isTaskRunning, setTaskRunning] = useState(false)
+  const [taskCancelled, setTaskCancelled] = useState(false)
   const [taskType, setTaskType] = useState<Impart.TaskType>()
 
   const [currentTask, setCurrentTask] = useState(0)
@@ -31,6 +33,7 @@ export function TaskStatusProvider({ children }: TaskStatusProviderProps) {
   useEffect(() => {
     return window.taskApi.onSequenceStarted(() => {
       setTaskRunning(true)
+      setTaskCancelled(false)
       setCurrentTask(0)
       setTaskCount(0)
     })
@@ -63,13 +66,33 @@ export function TaskStatusProvider({ children }: TaskStatusProviderProps) {
   useEffect(() => {
     return window.taskApi.onSequenceFinished(() => {
       setTaskRunning(false)
+      setTaskCancelled(false)
       setTaskType(undefined)
+    })
+  })
+
+  useEffect(() => {
+    return window.taskApi.onSequenceCancelled(() => {
+      setTaskRunning(false)
+      setTaskCancelled(true)
+      setTaskType(undefined)
+
+      setTaskCount(0)
+      setStepCount(0)
     })
   })
 
   return (
     <TaskStatusContext.Provider
-      value={{ isTaskRunning, taskType, currentTask, taskCount, currentStep, stepCount }}
+      value={{
+        isTaskRunning,
+        taskCancelled,
+        taskType,
+        currentTask,
+        taskCount,
+        currentStep,
+        stepCount
+      }}
     >
       {children}
     </TaskStatusContext.Provider>

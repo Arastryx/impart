@@ -161,6 +161,7 @@ declare global {
       onErrorThrown: CallbackFunc<Impart.Error>
       onTaskFinished: CallbackFunc<void>
       onSequenceFinished: CallbackFunc<void>
+      onSequenceCancelled: CallbackFunc<void>
     }
 
     tagApi: {
@@ -188,6 +189,7 @@ declare global {
         payload: Impart.Directory[]
       ) => Result<{ additions: number; removals: number }>
       getDirectories: () => Result<Impart.CountedDirectory[]>
+      cancelTasks: () => Result<void>
     }
 
     thumbnailApi: {

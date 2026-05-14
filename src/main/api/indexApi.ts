@@ -2,6 +2,7 @@ import { ipcMain } from 'electron'
 import { handleError } from '../common/handleError'
 import { IndexingManager } from '../indexables/indexingManager'
 import { DirectoryManager } from '../indexables/directoryManager'
+import { taskQueue } from '../task/taskQueue'
 
 export function setupIndexApi() {
   ipcMain.handle('index/indexAll', () => handleError(() => IndexingManager.indexAll()))
@@ -18,5 +19,9 @@ export function setupIndexApi() {
     'index/calculateTotalIndexChanges',
     (e, ...params: Parameters<typeof DirectoryManager.calculateTotalIndexChanges>) =>
       handleError(() => DirectoryManager.calculateTotalIndexChanges(...params))
+  )
+
+  ipcMain.handle('index/cancelTasks', (e, ...params: Parameters<typeof taskQueue.cancelAll>) =>
+    handleError(() => taskQueue.cancelAll())
   )
 }

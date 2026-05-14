@@ -37,7 +37,8 @@ contextBridge.exposeInMainWorld('taskApi', {
   onStepTaken: generateCallback('task/stepTaken'),
   onErrorThrown: generateCallback('task/errorThrown'),
   onTaskFinished: generateCallback('task/taskFinished'),
-  onSequenceFinished: generateCallback('task/sequenceFinished')
+  onSequenceFinished: generateCallback('task/sequenceFinished'),
+  onSequenceCancelled: generateCallback('task/sequenceCancelled')
 })
 
 contextBridge.exposeInMainWorld('taggableApi', {
@@ -79,7 +80,8 @@ contextBridge.exposeInMainWorld('indexApi', {
   selectDirectory: generateEndpoint('index/selectDirectory'),
   updateDirectories: generateEndpoint('index/updateDirectories'),
   calculateTotalIndexChanges: generateEndpoint('index/calculateTotalIndexChanges'),
-  getDirectories: generateEndpoint('index/getDirectories')
+  getDirectories: generateEndpoint('index/getDirectories'),
+  cancelTasks: generateEndpoint('index/cancelTasks')
 })
 
 contextBridge.exposeInMainWorld('thumbnailApi', {

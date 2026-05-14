@@ -33,6 +33,10 @@ class TaskMessenger {
   public sequenceFinished() {
     impartApp.mainWindow?.webContents.send('task/sequenceFinished')
   }
+
+  public sequenceCancelled() {
+    impartApp.mainWindow?.webContents.send('task/sequenceCancelled')
+  }
 }
 
 export const taskMessenger = new TaskMessenger()
