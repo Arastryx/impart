@@ -2,6 +2,7 @@ import { useDraggable } from '@dnd-kit/core'
 import { Box } from '@mui/material'
 import React, { useId } from 'react'
 import { DraggableHandleProvider } from './DraggableHandleProvider'
+import { useDisableDragging } from './DisableDragging'
 
 export type DraggableType = 'taggable' | 'tag' | 'tagGroup'
 
@@ -21,13 +22,15 @@ export interface DraggableProps {
 export function Draggable({ children, id, type, exposeHandle, disabled }: DraggableProps) {
   const draggableId = useId()
 
+  const actualDisabled = disabled || useDisableDragging()?.disable
+
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: draggableId,
     data: {
       id,
       type
     } satisfies DraggableData,
-    disabled
+    disabled: actualDisabled
   })
 
   if (!exposeHandle) {
