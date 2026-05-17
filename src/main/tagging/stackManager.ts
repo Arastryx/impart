@@ -1,9 +1,11 @@
 import { In } from 'typeorm'
 import { Taggable } from '../database/entities/Taggable'
 import { TaggableImage, isTaggableImage } from '../database/entities/TaggableImage'
-import { TaggableStack } from '../database/entities/TaggableStack'
+import { isTaggableStack, TaggableStack } from '../database/entities/TaggableStack'
 import { ImpartTask, TaskType } from '../task/impartTask'
 import { taskQueue } from '../task/taskQueue'
+import logger from 'electron-log'
+import { TaggableFile } from '../database/entities/TaggableFile'
 
 export namespace StackManager {
   export async function create(
@@ -30,6 +32,8 @@ export namespace StackManager {
       parent,
       tags: findCommonTags(childTaggables)
     })
+
+    logger.info(`Created a new "${name}" stack containing ${buildTaggableString(childTaggables)}`)
 
     await stack.save()
   }
@@ -61,14 +65,26 @@ export namespace StackManager {
     )
 
     if (currentStackId) {
-      await validateStackCover(currentStackId)
+      const stack = await TaggableStack.findOneOrFail({
+        where: { id: stackId },
+        relations: { taggables: true }
+      })
+
+      await validateStackCover(stack)
+
+      logger.info(`Added ${buildTaggableString(childTaggables)} to the "${stack.name}" stack`)
+    } else {
+      logger.info(`Moved ${buildTaggableString(childTaggables)} back to the root`)
     }
   }
 
   export async function rename(stackId: number, name: string) {
     const stack = await TaggableStack.findOneByOrFail({ id: stackId })
+    const oldName = stack.name
     stack.name = name
     await stack.save()
+
+    logger.info(`Renamed the "${oldName}" stack to "${name}"`)
   }
 
   export async function setCover(stackId: number, coverId: number) {
@@ -83,6 +99,8 @@ export namespace StackManager {
 
     stack.cover = cover
     await stack.save()
+
+    logger.info(`Updated the cover of the "${stack.name}" stack`)
   }
 
   export async function moveTaggablesToHome(taggableIds: number[], currentStackId: number) {
@@ -91,19 +109,36 @@ export namespace StackManager {
       relations: { taggables: true }
     })
 
+    const removedTaggables = stack.taggables!.filter((t) => taggableIds.some((id) => t.id === id))
+
     //Remove all target taggables from this stack (which will send them to the home stack)
     stack.taggables = stack.taggables!.filter((t) => !taggableIds.some((id) => t.id === id))
     await stack.save()
 
-    await validateStackCover(currentStackId)
+    logger.info(`Moved ${buildTaggableString(removedTaggables)} to the back to the root`)
+
+    await validateStackCover(stack)
   }
 
-  async function validateStackCover(stackId: number) {
-    const stack = await TaggableStack.findOneOrFail({
-      where: { id: stackId },
-      relations: { taggables: true }
-    })
+  function buildTaggableString(taggables: Taggable[]) {
+    if (taggables.length == 1) {
+      return `"${getTaggableName(taggables[0])}"`
+    } else if (taggables.length <= 4) {
+      return `${taggables.length} items (${taggables.map(getTaggableName).join(', ')})`
+    } else if (taggables.length > 4) {
+      return `${taggables.length} items`
+    }
 
+    return ''
+  }
+
+  function getTaggableName(taggable: Taggable) {
+    return isTaggableStack(taggable)
+      ? taggable.name
+      : (taggable as TaggableImage | TaggableFile).fileIndex.fileName
+  }
+
+  async function validateStackCover(stack: TaggableStack) {
     if (!stack.taggables?.some((t) => t.id === stack.cover?.id)) {
       stack.cover = stack.taggables?.find(isTaggableImage) ?? null
       await stack.save()
@@ -138,6 +173,8 @@ export namespace StackManager {
     }
 
     await stack.remove()
+
+    logger.info(`Exploded the "${stack.name}" stack`)
   }
 
   //CURRENTLY UNUSED. Finds all stacks with 0 or 1 items and removes them
