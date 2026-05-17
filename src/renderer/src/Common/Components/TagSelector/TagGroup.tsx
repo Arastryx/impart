@@ -10,6 +10,7 @@ import { useImpartIpcCall } from '@renderer/Common/Hooks/useImpartIpc'
 import { GroupTagList } from './GroupTagList'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import { useDisableDragging } from '../DragAndDrop/DisableDragging'
 
 export interface TagGroupProps {
   group: Impart.TagGroup
@@ -64,6 +65,7 @@ export function TagGroup({
   }
 
   const dragHandle = useDraggableHandle()
+  const dragDisabled = useDisableDragging()
 
   return (
     <Box
@@ -81,17 +83,20 @@ export function TagGroup({
       <EditTagGroup group={group} show={editMode} onClose={() => setEditMode(false)} />
       {!editMode && (
         <Stack direction="row" gap={1}>
-          <Stack
-            justifyContent="center"
-            borderRadius={2}
-            sx={(theme) => ({
-              transition: '0.2s',
-              '&:hover': { bgcolor: darken(theme.palette.background.paper, 0.1) }
-            })}
-            {...dragHandle}
-          >
-            <DragIndicatorIcon />
-          </Stack>
+          {!dragDisabled?.disable && (
+            <Stack
+              justifyContent="center"
+              borderRadius={2}
+              sx={(theme) => ({
+                transition: '0.2s',
+                '&:hover': { bgcolor: darken(theme.palette.background.paper, 0.1) }
+              })}
+              {...dragHandle}
+            >
+              <DragIndicatorIcon />
+            </Stack>
+          )}
+
           <Box flex={1}>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Typography variant="h5" onClick={() => setEditMode(true)}>

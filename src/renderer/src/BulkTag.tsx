@@ -5,6 +5,7 @@ import { Tag } from './Common/Components/Tag/Tag'
 import CheckIcon from '@mui/icons-material/CheckRounded'
 import { Backable } from './Common/Components/Backable'
 import { VirtualTaggableGrid } from './Common/Components/TaggableGrid'
+import { DisableDragging } from './Common/Components/DragAndDrop/DisableDragging'
 
 export interface BulkTagProps {
   items: Impart.Taggable[]
@@ -61,7 +62,9 @@ export function BulkTag({ items, onFinish }: BulkTagProps) {
         <Box width={500}>
           <Card sx={{ height: '100%' }}>
             <CardContent sx={{ height: '100%', overflowY: 'auto' }}>
-              <TagSelector selection={tagSelection} onSelectionChange={setTagSelection} />
+              <DisableDragging>
+                <TagSelector selection={tagSelection} onSelectionChange={setTagSelection} />
+              </DisableDragging>
             </CardContent>
           </Card>
         </Box>
