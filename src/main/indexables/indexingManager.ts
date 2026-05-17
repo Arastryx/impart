@@ -150,6 +150,7 @@ export namespace IndexingManager {
     } else if (item.taggable && item.fileName && item.date) {
       await updateIndex(item.taggable, item.date)
     } else if (item.taggable && !item.fileName) {
+      logger.info(`Removing indexed item: ${item.taggable.fileIndex.fileName}`)
       await item.taggable.remove()
     }
   }
