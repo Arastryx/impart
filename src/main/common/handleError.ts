@@ -1,3 +1,5 @@
+import logger from 'electron-log'
+
 export interface ImpartError {
   message: string
   stack?: string
@@ -22,7 +24,7 @@ export async function handleError<T>(func: () => T | Promise<T>): Promise<T | Im
       }
     }
 
-    console.error(e)
+    logger.error(e)
     return error
   }
 }
