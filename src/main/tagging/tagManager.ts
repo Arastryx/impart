@@ -86,7 +86,7 @@ export namespace TagManager {
       await manager.remove(groupEntity)
     })
 
-    logger.info(`Deleted tag group ${groupEntity.label ?? 'Unnamed Group'}`)
+    logger.info(`Deleted tag group "${groupEntity.label ?? 'Unnamed Group'}"`)
 
     return true
   }
