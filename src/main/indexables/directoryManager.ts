@@ -56,8 +56,8 @@ export namespace DirectoryManager {
       } else if (directory && payload) {
         await updateDirectory(directory, payload)
       } else if (directory && !payload) {
+        logger.info(`Removing the "${directory.path}" directory`)
         await directory.remove()
-        logger.info(`Removed the "${directory.path}" directory`)
       }
     }
   }
