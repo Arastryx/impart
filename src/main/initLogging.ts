@@ -11,4 +11,6 @@ export function initLogging() {
 
   electronLog.transports.file.resolvePathFn = () =>
     path.join(appData, 'impart/logs', import.meta.env.DEV ? 'dev.log' : 'main.log')
+
+  electronLog.errorHandler.startCatching()
 }
