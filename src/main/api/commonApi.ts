@@ -2,6 +2,7 @@ import { ipcMain } from 'electron'
 import { store } from '../config'
 import { handleError } from '../common/handleError'
 import { impartApp } from '..'
+import logger from 'electron-log'
 
 //It turns out according to the electron-store docs (https://github.com/sindresorhus/electron-store?tab=readme-ov-file#how-do-i-get-store-values-in-the-renderer-process-when-my-store-was-initialized-in-the-main-process)
 // even though the store should work in the renderer, you can't actually use it
@@ -22,6 +23,7 @@ export function setupCommonApi() {
     handleError(() => {
       store.set(key, value)
       impartApp.mainWindow?.webContents.send('common/configUpdated', { key, value })
+      logger.info(`Updated the ${key} setting to ${JSON.stringify(value)}`)
     })
   )
 }

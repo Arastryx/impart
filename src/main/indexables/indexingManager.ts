@@ -15,6 +15,7 @@ import { ThumbnailManager } from './thumbnailManager'
 import { zap } from '../common/zap'
 import { TaggingManager } from '../tagging/taggingManager'
 import { store } from '../config'
+import logger from 'electron-log'
 
 export namespace IndexingManager {
   let isIndexing = false
@@ -27,7 +28,7 @@ export namespace IndexingManager {
 
   export async function indexAll() {
     if (isIndexing) {
-      console.log('Indexing skipped: Indexing is already in progress')
+      logger.info('Indexing skipped: Indexing is already in progress')
       return
     }
 
@@ -38,7 +39,7 @@ export namespace IndexingManager {
       const directories = await Directory.find({ relations: { autoTags: true } })
 
       for (const directory of directories) {
-        console.log('Indexing:', directory.path)
+        logger.info('Indexing:', directory.path)
         const changesDetected = await indexFiles(directory)
 
         if (changesDetected) {
@@ -54,7 +55,7 @@ export namespace IndexingManager {
 
   export async function indexFiles(directory: Directory) {
     if (!existsSync(directory.path)) {
-      console.log('Directory no longer exists! Removing...')
+      logger.info('Directory no longer exists! Removing...')
       await directory.remove()
       return true
     }
@@ -149,6 +150,7 @@ export namespace IndexingManager {
     } else if (item.taggable && item.fileName && item.date) {
       await updateIndex(item.taggable, item.date)
     } else if (item.taggable && !item.fileName) {
+      logger.info(`Removing indexed item: ${item.taggable.fileIndex.fileName}`)
       await item.taggable.remove()
     }
   }
@@ -166,7 +168,7 @@ export namespace IndexingManager {
   }
 
   async function indexImage(filePath: string, directory: Directory) {
-    console.log('Indexing Image: ', filePath)
+    logger.info('Indexing Image: ', filePath)
     const [size, stats] = await Promise.all([
       await imageSizeFromFile(filePath),
       await stat(filePath)
@@ -186,7 +188,7 @@ export namespace IndexingManager {
   }
 
   async function indexFile(filePath: string, directory: Directory) {
-    console.log('Indexing File: ', filePath)
+    logger.info('Indexing File: ', filePath)
 
     const indexedFile = TaggableFile.create({
       fileIndex: { path: filePath, fileName: path.basename(filePath) },
@@ -225,7 +227,7 @@ export namespace IndexingManager {
         )
       }
 
-      console.log('Associating indexed image with: ', possibleSourceFiles[0].fileIndex.path)
+      logger.info('Associating indexed image with: ', possibleSourceFiles[0].fileIndex.path)
       image.source = possibleSourceFiles[0]
 
       if (image.tags.length == 0 && store.get('applyTagsOnSourceAssociation')) {

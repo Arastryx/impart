@@ -8,6 +8,7 @@ import { IndexingManager } from './indexingManager'
 import { zap } from '../common/zap'
 import { TaggingManager } from '../tagging/taggingManager'
 import { readdir } from 'fs/promises'
+import logger from 'electron-log'
 
 interface DirectoryPayload {
   path: string
@@ -55,6 +56,7 @@ export namespace DirectoryManager {
       } else if (directory && payload) {
         await updateDirectory(directory, payload)
       } else if (directory && !payload) {
+        logger.info(`Removing the "${directory.path}" directory`)
         await directory.remove()
       }
     }
@@ -72,6 +74,8 @@ export namespace DirectoryManager {
 
     await directory.save()
     await IndexingManager.indexFiles(directory)
+
+    logger.info(`Added the "${directory.path}" directory to the index`)
   }
 
   async function updateDirectory(directory: Directory, payload: DirectoryPayload) {
@@ -89,6 +93,8 @@ export namespace DirectoryManager {
           : await Tag.findBy({ id: In(payload.autoTags) })
 
       directory.autoTags = nextTags
+
+      logger.info(`Updated the "${directory.path}" directory settings`)
     }
 
     const recursionChanged = directory.recursive != payload.recursive
