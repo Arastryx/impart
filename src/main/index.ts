@@ -13,11 +13,10 @@ import { setupStackApi } from './api/stackApi'
 import { ThumbnailManager } from './indexables/thumbnailManager'
 import { store } from './config'
 import { autoUpdater } from 'electron-updater'
-import electronLog from 'electron-log'
 import { setupCommonApi } from './api/commonApi'
+import { initLogging } from './initLogging'
 
-electronLog.transports.file.level = 'info'
-autoUpdater.logger = electronLog
+initLogging()
 
 if (store.get('autoUpdatingEnabled')) {
   autoUpdater.checkForUpdatesAndNotify()
