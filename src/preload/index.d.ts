@@ -10,6 +10,7 @@ declare global {
       autoUpdatingEnabled: boolean
       applyTagsOnSourceAssociation: boolean
       showPatchNotesOnUpdate: boolean
+      taggableTagOrder: 'applied' | 'alphabetical' | 'sideBar'
     }
 
     interface Dimensions {
@@ -123,7 +124,6 @@ declare global {
         key: Key,
         value: Impart.ConfigItems[Key]
       ) => Result<void>
-      onConfigUpdated: CallbackFunc<{ key: string; value: any }>
     }
 
     fileApi: {

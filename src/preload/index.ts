@@ -21,8 +21,7 @@ function generateCallback(channel: string) {
 
 contextBridge.exposeInMainWorld('commonApi', {
   getConfigItem: generateEndpoint('common/getConfigItem'),
-  setConfigItem: generateCommand('common/setConfigItem'),
-  onConfigUpdated: generateCallback('common/configUpdated')
+  setConfigItem: generateCommand('common/setConfigItem')
 })
 
 contextBridge.exposeInMainWorld('fileApi', {

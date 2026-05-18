@@ -19,7 +19,7 @@ export function Updates({ onShowPatchNotes }: UpdatesProps) {
           Show Patch Notes
         </Button>
       </Stack>
-      <Stack gap={2}>
+      <Stack gap={4}>
         <ToggleSetting
           storeKey="autoUpdatingEnabled"
           title="Enable Auto Updating"

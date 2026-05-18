@@ -22,7 +22,6 @@ export function setupCommonApi() {
   ipcMain.on('common/setConfigItem', async (_e, key: string, value: any) =>
     handleError(() => {
       store.set(key, value)
-      impartApp.mainWindow?.webContents.send('common/configUpdated', { key, value })
       logger.info(`Updated the ${key} setting to ${JSON.stringify(value)}`)
     })
   )

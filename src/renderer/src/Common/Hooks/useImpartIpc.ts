@@ -15,16 +15,23 @@ export function useImpartIpcCall<Params extends any[], Result>(
       const result = await call(...params)
       setLoading(false)
 
-      if (isNotError(result)) {
-        return result
-      } else if (isError(result)) {
-        sendError(result.message)
-      }
+      return resolve(result, sendError)
     },
     [...deps, sendError]
   )
 
   return { callIpc, isLoading }
+}
+
+export function resolve<T>(
+  result: T | Impart.Error,
+  onError: (result: string) => void
+): Exclude<T | Impart.Error, Impart.Error> | undefined {
+  if (isNotError(result)) {
+    return result
+  } else if (isError(result)) {
+    onError(result.message)
+  }
 }
 
 function isNotError<T>(
@@ -65,5 +72,5 @@ export function useImpartIpcData<Result>(
     loadData()
   }, [loadData])
 
-  return { data, isLoading, reload: loadData, ...everythingElse }
+  return { data, isLoading, setData, reload: loadData, ...everythingElse }
 }
