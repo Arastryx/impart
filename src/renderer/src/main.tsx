@@ -11,26 +11,29 @@ import { NotificationProvider } from './Common/Components/NotificationProvider'
 import { ActiveContextMenuProvider } from './Common/Components/ContextMenu/ActiveContextMenuProvider'
 import { ConfirmationDialogProvider } from './Common/Components/ConfirmationDialogProvider'
 import 'animate.css'
+import { SettingsProvider } from './Common/Contexts/SettingsProvider'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <NotificationProvider>
-      <TaskStatusProvider>
-        <DirectoryProvider>
-          <TagProvider>
-            <TaggableProvider>
-              <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <ActiveContextMenuProvider>
-                  <ConfirmationDialogProvider>
-                    <Impart />
-                  </ConfirmationDialogProvider>
-                </ActiveContextMenuProvider>
-              </ThemeProvider>
-            </TaggableProvider>
-          </TagProvider>
-        </DirectoryProvider>
-      </TaskStatusProvider>
+      <SettingsProvider>
+        <TaskStatusProvider>
+          <DirectoryProvider>
+            <TagProvider>
+              <TaggableProvider>
+                <ThemeProvider theme={theme}>
+                  <CssBaseline />
+                  <ActiveContextMenuProvider>
+                    <ConfirmationDialogProvider>
+                      <Impart />
+                    </ConfirmationDialogProvider>
+                  </ActiveContextMenuProvider>
+                </ThemeProvider>
+              </TaggableProvider>
+            </TagProvider>
+          </DirectoryProvider>
+        </TaskStatusProvider>
+      </SettingsProvider>
     </NotificationProvider>
   </React.StrictMode>
 )

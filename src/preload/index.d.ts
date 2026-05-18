@@ -123,7 +123,6 @@ declare global {
         key: Key,
         value: Impart.ConfigItems[Key]
       ) => Result<void>
-      onConfigUpdated: CallbackFunc<{ key: string; value: any }>
     }
 
     fileApi: {
