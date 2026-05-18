@@ -9,19 +9,31 @@ export interface EditTagsProps {
   removeTag?: (t: Impart.Tag) => void
 }
 
-function compareTagOrder(first: Impart.Tag, second: Impart.Tag, groups?: Impart.TagGroup[]) {
+interface TagOrder {
+  tag: Impart.Tag
+  groupOrder: number
+}
+
+function findOrder(tag: Impart.Tag, groups?: Impart.TagGroup[]): TagOrder {
   if (!groups) {
-    return 0
+    return {
+      tag,
+      groupOrder: 0
+    }
   }
 
-  const firstGroup = groups.find((g) => g.tags?.some((t) => t.id === first.id))
-  const secondGroup = groups.find((g) => g.tags?.some((t) => t.id === second.id))
+  return {
+    tag,
+    groupOrder: groups.find((g) => g.tags?.some((t) => t.id === tag.id))?.groupOrder ?? 0
+  }
+}
 
-  if (firstGroup?.id != secondGroup?.id) {
-    return (firstGroup?.groupOrder ?? 0) - (secondGroup?.groupOrder ?? 0)
+function compareTagOrder(first: TagOrder, second: TagOrder) {
+  if (first.groupOrder != second.groupOrder) {
+    return first.groupOrder - second.groupOrder
   }
 
-  return first.tagOrder - second.tagOrder
+  return first.tag.tagOrder - second.tag.tagOrder
 }
 
 export function EditTags({ tags, removeTag }: EditTagsProps) {
@@ -37,7 +49,11 @@ export function EditTags({ tags, removeTag }: EditTagsProps) {
           .slice()
           .sort((a, b) => (a.label ?? 'Unnamed Tag').localeCompare(b.label ?? 'Unnamed Tag'))
       case 'sideBar':
-        return tags.slice().sort((a, b) => compareTagOrder(a, b, groups))
+        return tags
+          .slice()
+          .map((t) => findOrder(t, groups))
+          .sort((a, b) => compareTagOrder(a, b))
+          .map((t) => t.tag)
     }
   }, [tags, displayOrder, groups])
 
