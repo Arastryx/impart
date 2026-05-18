@@ -49,11 +49,15 @@ export function EditTags({ tags, removeTag }: EditTagsProps) {
           .slice()
           .sort((a, b) => (a.label ?? 'Unnamed Tag').localeCompare(b.label ?? 'Unnamed Tag'))
       case 'sideBar':
-        return tags
-          .slice()
-          .map((t) => findOrder(t, groups))
-          .sort((a, b) => compareTagOrder(a, b))
-          .map((t) => t.tag)
+        return (
+          tags
+            //We figure out what the order of a group a tag belongs to before we do our search
+            // instead of during our search since the latter would result in group searches
+            // happening every single comparison
+            .map((t) => findOrder(t, groups))
+            .sort((a, b) => compareTagOrder(a, b))
+            .map((t) => t.tag) //And then we map everything back to tags
+        )
     }
   }, [tags, displayOrder, groups])
 

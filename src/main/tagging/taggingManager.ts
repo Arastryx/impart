@@ -77,7 +77,7 @@ export namespace TaggingManager {
       } else {
         logger.info(`Removed ${tagArrayToString(removedTags)} from ${taggableName}`)
       }
-    } else {
+    } else if (addedTags.length > 0) {
       logger.info(`Added ${tagArrayToString(addedTags)} to ${taggableName}`)
     }
   }
