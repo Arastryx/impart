@@ -15,16 +15,9 @@ interface TagOrder {
 }
 
 function findOrder(tag: Impart.Tag, groups?: Impart.TagGroup[]): TagOrder {
-  if (!groups) {
-    return {
-      tag,
-      groupOrder: 0
-    }
-  }
-
   return {
     tag,
-    groupOrder: groups.find((g) => g.tags?.some((t) => t.id === tag.id))?.groupOrder ?? 0
+    groupOrder: groups?.find((g) => g.tags?.some((t) => t.id === tag.id))?.groupOrder ?? 0
   }
 }
 
