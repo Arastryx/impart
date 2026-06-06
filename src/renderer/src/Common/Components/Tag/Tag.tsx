@@ -103,7 +103,7 @@ export function Tag({ tag, selected, editable, onSelect, onExclude, size, exclud
                 <Box
                   width="calc(100% + 10px)"
                   height={3}
-                  bgcolor={tag.color}
+                  bgcolor={tag.color ?? theme.palette.primary.main}
                   sx={{ opacity: excluded ? 0.6 : 0, transition: '0.2s' }}
                 ></Box>
               }

@@ -29,7 +29,7 @@ export function TagSelection({
           Clear all
         </Button>
       </Stack>
-      <Stack>
+      <Stack direction="row" flexWrap={'wrap'} gap={1}>
         {selection && selection.length > 0 && (
           <Box>
             <Divider variant="middle">
