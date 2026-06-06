@@ -18,6 +18,7 @@ export interface TagSelectorProps {
   exclusion?: Impart.Tag[]
   onSelectionChange?: (selection: Impart.Tag[]) => void
   onExclusionChange?: (selection: Impart.Tag[]) => void
+  hideSelectionPanel?: boolean
 }
 
 function anyHaveValue<T>(...arrays: (T[] | undefined)[]) {
@@ -28,7 +29,8 @@ export function TagSelector({
   selection,
   exclusion,
   onSelectionChange,
-  onExclusionChange
+  onExclusionChange,
+  hideSelectionPanel
 }: TagSelectorProps) {
   const { collapsedGroups, toggleGroupCollapse, expandAll, collapseAll } = useGroupCollapse()
   const { groups, reload, tags } = useTagGroups()
@@ -67,6 +69,7 @@ export function TagSelector({
     <Stack height="100%" gap={2} justifyContent="space-between">
       <Stack
         gap={1}
+        p={1}
         sx={{
           '& .MuiButton-root': {
             opacity: 0,
@@ -128,23 +131,25 @@ export function TagSelector({
           )}
         />
       </Stack>
-      {anyHaveValue(selection, explicitlyExcludedTags, includedExclusionTags) && (
-        <Box position={'sticky'} bgcolor="background.paper" bottom={0} pb={2}>
-          <Divider />
-          <TagSelection
-            selection={selection}
-            exclusion={explicitlyExcludedTags}
-            includedExclusions={includedExclusionTags}
-            onClickSelected={toggleSelection}
-            onClickExcluded={toggleExclusion}
-            onClickIncludedExclusion={toggleExclusion}
-            onClear={() => {
-              onSelectionChange && onSelectionChange([])
-              onExclusionChange && onExclusionChange(tags?.filter((t) => t.excludeByDefault) ?? [])
-            }}
-          />
-        </Box>
-      )}
+      {anyHaveValue(selection, explicitlyExcludedTags, includedExclusionTags) &&
+        !hideSelectionPanel && (
+          <Box position={'sticky'} bgcolor="background.paper" bottom={0} pb={2} pl={1}>
+            <Divider />
+            <TagSelection
+              selection={selection}
+              exclusion={explicitlyExcludedTags}
+              includedExclusions={includedExclusionTags}
+              onClickSelected={toggleSelection}
+              onClickExcluded={toggleExclusion}
+              onClickIncludedExclusion={toggleExclusion}
+              onClear={() => {
+                onSelectionChange && onSelectionChange([])
+                onExclusionChange &&
+                  onExclusionChange(tags?.filter((t) => t.excludeByDefault) ?? [])
+              }}
+            />
+          </Box>
+        )}
     </Stack>
   )
 }

@@ -88,7 +88,7 @@ export function TaggableBrowser({ onSettingsPressed, ...gridEvents }: TaggableBr
             <Box py={1} pr={1} height="100%">
               <Stack width="100%" height="100%">
                 <Card sx={{ flex: 1, overflowY: 'auto' }}>
-                  <CardContent sx={{ height: '100%' }}>
+                  <CardContent sx={{ height: '100%', padding: 1 }}>
                     <TagSelector
                       selection={editTarget ? editTagSelection : selectedTags}
                       exclusion={editTarget ? [] : excludedTags}
@@ -108,6 +108,7 @@ export function TaggableBrowser({ onSettingsPressed, ...gridEvents }: TaggableBr
                           })
                         }
                       }}
+                      hideSelectionPanel={editTarget != null}
                     />
                   </CardContent>
                 </Card>
