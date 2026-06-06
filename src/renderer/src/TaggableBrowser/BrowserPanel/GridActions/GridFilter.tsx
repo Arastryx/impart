@@ -67,7 +67,7 @@ export function GridFilter({ anchorEl }: GridFilterProps) {
           horizontal: 'right'
         }}
       >
-        <Stack p={2} gap={1.5}>
+        <Stack p={2} gap={1.5} width={300}>
           <YearSelector />
           <DirectorySelector />
           <SourceVisibilitySelector />

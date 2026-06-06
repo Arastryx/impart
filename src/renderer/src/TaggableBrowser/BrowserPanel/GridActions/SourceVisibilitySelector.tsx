@@ -9,17 +9,17 @@ export function SourceVisibilitySelector({}: SourceVisibilitySelectorProps) {
 
   return (
     <TextField
-      label="Non-Image Files"
+      label="Displayed Files"
       select
       value={fetchOptions.sourceFiles ?? 'unassociated'}
       onChange={(e) => setFetchOptions({ sourceFiles: e.target.value as Impart.SourceFileFilter })}
       size="small"
     >
-      <MenuItem value="only">Only</MenuItem>
-      <MenuItem value="onlyUnassociated">Only Unassociated</MenuItem>
-      <MenuItem value="all">All</MenuItem>
-      <MenuItem value="unassociated">Unassociated</MenuItem>
-      <MenuItem value="none">None</MenuItem>
+      <MenuItem value="all">Show all images and files</MenuItem>
+      <MenuItem value="unassociated">Exclude associated files</MenuItem>
+      <MenuItem value="only">Only show files</MenuItem>
+      <MenuItem value="onlyUnassociated">Only show unassociated files</MenuItem>
+      <MenuItem value="none">Only show images</MenuItem>
     </TextField>
   )
 }
