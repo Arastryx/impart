@@ -35,28 +35,16 @@ export function Tagging({}: TaggingProps) {
             }
           >
             <FormControlLabel
-              value={'applied'}
-              control={<Radio />}
-              label={
-                <Stack>
-                  <Typography>
-                    Order applied{' '}
-                    <Typography variant="caption" lineHeight={1}>
-                      (default)
-                    </Typography>
-                  </Typography>
-                  <Typography variant="caption" lineHeight={1}>
-                    Show tags in the order they were originally applied
-                  </Typography>
-                </Stack>
-              }
-            />
-            <FormControlLabel
               value="sideBar"
               control={<Radio />}
               label={
                 <Stack>
-                  <Typography>Sidebar order</Typography>
+                  <Typography>
+                    Sidebar order{' '}
+                    <Typography variant="caption" lineHeight={1}>
+                      (default)
+                    </Typography>
+                  </Typography>
                   <Typography variant="caption" lineHeight={1}>
                     Order tags according to how they're ordered in the tag selector
                   </Typography>
@@ -70,7 +58,7 @@ export function Tagging({}: TaggingProps) {
                 <Stack>
                   <Typography>Alphabetical order</Typography>
                   <Typography variant="caption" lineHeight={1}>
-                    Self-explanatory, I just wanted all three options to have descriptions lol
+                    Order by label
                   </Typography>
                 </Stack>
               }

@@ -11,7 +11,7 @@ interface Config {
   autoUpdatingEnabled: boolean
   applyTagsOnSourceAssociation: boolean
   showPatchNotesOnUpdate: boolean
-  taggableTagOrder: 'applied' | 'alphabetical' | 'sideBar'
+  taggableTagOrder: 'alphabetical' | 'sideBar'
 }
 
 const schema: Schema<Config> = {
@@ -31,7 +31,7 @@ const schema: Schema<Config> = {
     default: true
   },
   taggableTagOrder: {
-    default: 'applied'
+    default: 'sideBar'
   }
 }
 

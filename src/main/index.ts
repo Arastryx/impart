@@ -16,6 +16,19 @@ import { autoUpdater } from 'electron-updater'
 import { setupCommonApi } from './api/commonApi'
 import { initLogging } from './initLogging'
 
+const isDev = !app.isPackaged
+
+async function installDevtron() {
+  const { devtron } = await import('@electron/devtron')
+  await devtron.install()
+}
+
+if (isDev) {
+  installDevtron().catch((error) => {
+    console.error('Failed to install Devtron:', error)
+  })
+}
+
 initLogging()
 
 if (store.get('autoUpdatingEnabled')) {
