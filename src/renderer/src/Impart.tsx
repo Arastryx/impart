@@ -32,10 +32,7 @@ export function Impart({}: ImpartProps) {
   const { show, setShow } = useShowPatchNotes()
 
   useEffect(() => {
-    ;(async () => {
-      await window.indexApi.indexAll()
-      fetchTaggables()
-    })()
+    window.indexApi.indexAll()
   }, [])
 
   const closeAndRefresh = () => {
