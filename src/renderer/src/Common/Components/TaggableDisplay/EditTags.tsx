@@ -50,6 +50,9 @@ export function EditTags({ tags, removeTag }: EditTagsProps) {
             .map((t) => t.tag) //And then we map everything back to tags
         )
     }
+
+    //Emergency fallthrough if all else fails
+    return tags
   }, [tags, displayOrder, groups])
 
   return (
