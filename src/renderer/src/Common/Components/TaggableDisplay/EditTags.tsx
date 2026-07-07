@@ -35,8 +35,6 @@ export function EditTags({ tags, removeTag }: EditTagsProps) {
 
   const orderedTags = useMemo(() => {
     switch (displayOrder) {
-      case 'applied':
-        return tags
       case 'alphabetical':
         return tags
           .slice()
