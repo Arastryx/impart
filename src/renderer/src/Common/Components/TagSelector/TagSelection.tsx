@@ -29,13 +29,19 @@ export function TagSelection({
           Clear all
         </Button>
       </Stack>
-      <Stack direction="row" flexWrap={'wrap'} gap={1}>
+      <Stack
+        direction="row"
+        flexWrap={'wrap'}
+        justifyContent={'space-around'}
+        rowGap={1}
+        columnGap={4}
+      >
         {selection && selection.length > 0 && (
-          <Box>
-            <Divider variant="middle">
+          <Box minWidth={110}>
+            <Divider variant="middle" sx={{ mx: 0 }}>
               <Typography variant="caption">Selected</Typography>
             </Divider>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} justifyContent={'center'}>
               {selection.map((t) => (
                 <Grid key={t.id}>
                   <Tag tag={t} onSelect={() => onClickSelected && onClickSelected(t)} />
@@ -45,11 +51,11 @@ export function TagSelection({
           </Box>
         )}
         {exclusion && exclusion.length > 0 && (
-          <Box>
-            <Divider variant="middle">
+          <Box minWidth={110}>
+            <Divider variant="middle" sx={{ mx: 0 }}>
               <Typography variant="caption">Excluded</Typography>
             </Divider>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} justifyContent={'center'}>
               {exclusion?.map((t) => (
                 <Grid key={t.id}>
                   <Tag tag={t} excluded onSelect={() => onClickExcluded && onClickExcluded(t)} />
@@ -59,11 +65,11 @@ export function TagSelection({
           </Box>
         )}
         {includedExclusions && includedExclusions.length > 0 && (
-          <Box>
-            <Divider variant="middle">
+          <Box minWidth={110}>
+            <Divider variant="middle" sx={{ mx: 0 }}>
               <Typography variant="caption">Included</Typography>
             </Divider>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} justifyContent={'center'}>
               {includedExclusions?.map((t) => (
                 <Grid key={t.id}>
                   <Tag

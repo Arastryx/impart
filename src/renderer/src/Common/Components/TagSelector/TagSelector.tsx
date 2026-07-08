@@ -133,7 +133,7 @@ export function TagSelector({
       </Stack>
       {anyHaveValue(selection, explicitlyExcludedTags, includedExclusionTags) &&
         !hideSelectionPanel && (
-          <Box position={'sticky'} bgcolor="background.paper" bottom={0} pb={2} px={1}>
+          <Box position={'sticky'} bgcolor="background.paper" bottom={0} pb={2} px={1} zIndex={2}>
             <Divider />
             <TagSelection
               selection={selection}
