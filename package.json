@@ -79,6 +79,7 @@
     "typescript": "^7.0.2",
     "vite": "^7.1.6"
   },
+  "desktopName": "com.arastryx.impart.desktop",
   "build": {
     "appId": "com.arastryx.impart",
     "productName": "Impart",
@@ -106,6 +107,7 @@
       "deleteAppDataOnUninstall": true
     },
     "linux": {
+      "syncDesktopName": true,
       "category": "Graphics",
       "publish": [
         "github"
