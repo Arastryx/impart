@@ -3,13 +3,16 @@ import { ElectronAPI } from '@electron-toolkit/preload'
 type CallbackFunc<Payload> = (callback: (values: Payload) => void) => () => void
 type Result<Payload> = Promise<Payload | Impart.Error>
 
-interface ConfigItems {
-  previousVersion: string
-  autoUpdatingEnabled: boolean
-}
-
 declare global {
   namespace Impart {
+    interface ConfigItems {
+      previousVersion: string
+      autoUpdatingEnabled: boolean
+      applyTagsOnSourceAssociation: boolean
+      showPatchNotesOnUpdate: boolean
+      taggableTagOrder: 'alphabetical' | 'sideBar'
+    }
+
     interface Dimensions {
       width: number
       height: number
@@ -58,6 +61,8 @@ declare global {
 
     type Taggable = TaggableImage | TaggableFile | TaggableStack
 
+    type SourceFileFilter = 'only' | 'all' | 'unassociated' | 'onlyUnassociated' | 'none'
+
     interface FetchTaggablesOptions {
       tagIds?: number[]
       excludedTagIds?: number[]
@@ -69,6 +74,7 @@ declare global {
       onlyHidden?: boolean
       onlyFiles?: boolean
       allowPrivate?: boolean
+      sourceFiles?: SourceFileFilter
     }
 
     //~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*
@@ -81,13 +87,10 @@ declare global {
       tagOrder: number
       color?: string
       isPrivate: boolean
+      excludeByDefault: boolean
     }
 
-    interface TagModel {
-      label?: string
-      color?: string
-      isPrivate: boolean
-    }
+    type TagModel = Omit<Tag, 'id' | 'tagOrder'>
 
     interface TagGroup {
       id: number
@@ -114,10 +117,13 @@ declare global {
     electron: ElectronAPI
 
     commonApi: {
-      getConfigItem: <Key extends keyof ConfigItems>(
+      getConfigItem: <Key extends keyof Impart.ConfigItems>(
         key: Key
-      ) => Promise<{ result: ConfigItems[Key] }>
-      setConfigItem: <Key extends keyof ConfigItems>(key: Key, value: ConfigItems[Key]) => void
+      ) => Result<{ result: Impart.ConfigItems[Key] }>
+      setConfigItem: <Key extends keyof Impart.ConfigItems>(
+        key: Key,
+        value: Impart.ConfigItems[Key]
+      ) => Result<void>
     }
 
     fileApi: {
@@ -130,6 +136,7 @@ declare global {
       getAllTaggableYears: () => Result<number[]>
       setHidden: (ids: number[], hidden: boolean) => Result<void>
       associateImageWithFile: (imageIds: number[], fileId: number) => Result<void>
+      detachSourceFile: (imageIds: number[]) => Result<void>
     }
 
     stackApi: {
@@ -154,6 +161,7 @@ declare global {
       onErrorThrown: CallbackFunc<Impart.Error>
       onTaskFinished: CallbackFunc<void>
       onSequenceFinished: CallbackFunc<void>
+      onSequenceCancelled: CallbackFunc<void>
     }
 
     tagApi: {
@@ -181,6 +189,7 @@ declare global {
         payload: Impart.Directory[]
       ) => Result<{ additions: number; removals: number }>
       getDirectories: () => Result<Impart.CountedDirectory[]>
+      cancelTasks: () => Result<void>
     }
 
     thumbnailApi: {

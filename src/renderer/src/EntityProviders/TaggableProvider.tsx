@@ -1,7 +1,8 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { usePartialState } from '@renderer/Common/Hooks/usePartialState'
 import { useTaskStatus } from '@renderer/TaskStatusProvider'
 import { useImpartIpcData } from '@renderer/Common/Hooks/useImpartIpc'
+import { useTagGroups } from './TagProvider'
 
 interface TaggableData {
   taggables: Impart.Taggable[]
@@ -24,6 +25,7 @@ const DEFAULT_PRIVATE_KEY = 'defaultPrivate'
 
 export function TaggableProvider({ children }: TaggableProviderProps) {
   const { isTaskRunning } = useTaskStatus()
+  const { tags, isLoading: tagsAreLoading } = useTagGroups()
 
   const [stackTrail, setStackTrail] = useState<Impart.TaggableStack[]>([])
   const [fetchOptions, setFetchOptions] = usePartialState<Impart.FetchTaggablesOptions>(
@@ -33,6 +35,17 @@ export function TaggableProvider({ children }: TaggableProviderProps) {
         allowPrivate: (localStorage.getItem(DEFAULT_PRIVATE_KEY) as boolean | null) ?? true
       }) satisfies Impart.FetchTaggablesOptions
   )
+
+  const tagsLoadedRef = useRef(false)
+
+  useEffect(() => {
+    if (!tagsAreLoading && !tagsLoadedRef.current) {
+      setFetchOptions({
+        excludedTagIds: tags?.filter((t) => t.excludeByDefault).map((t) => t.id)
+      })
+      tagsLoadedRef.current = true
+    }
+  }, [tagsAreLoading, tags])
 
   const updateStackTrail = useCallback((stack: Impart.TaggableStack[]) => {
     setStackTrail(stack)

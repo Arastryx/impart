@@ -23,7 +23,7 @@ export function DirectorySelector({}: DirectorySelectorProps) {
   const { fetchOptions, setFetchOptions } = useTaggables()
 
   return (
-    <FormControl size="small" sx={{ width: 200 }}>
+    <FormControl size="small" sx={{ width: '100%' }}>
       <InputLabel id={LABEL_ID}>Directories</InputLabel>
       <Select
         labelId={LABEL_ID}

@@ -18,18 +18,24 @@ export interface TagSelectorProps {
   exclusion?: Impart.Tag[]
   onSelectionChange?: (selection: Impart.Tag[]) => void
   onExclusionChange?: (selection: Impart.Tag[]) => void
+  hideSelectionPanel?: boolean
+}
+
+function anyHaveValue<T>(...arrays: (T[] | undefined)[]) {
+  return arrays.some((t) => (t?.length ?? 0) > 0)
 }
 
 export function TagSelector({
   selection,
   exclusion,
   onSelectionChange,
-  onExclusionChange
+  onExclusionChange,
+  hideSelectionPanel
 }: TagSelectorProps) {
   const { collapsedGroups, toggleGroupCollapse, expandAll, collapseAll } = useGroupCollapse()
   const { groups, reload, tags } = useTagGroups()
 
-  const { selectItem, itemIsSelected } = useMultiSelection(
+  const { selectItem: toggleSelection, itemIsSelected } = useMultiSelection(
     tags ?? [],
     selection ?? [],
     (s) => onSelectionChange && onSelectionChange(s),
@@ -37,7 +43,7 @@ export function TagSelector({
     { toggleMode: true }
   )
 
-  const { selectItem: excludeItem, itemIsSelected: itemIsExcluded } = useMultiSelection(
+  const { selectItem: toggleExclusion, itemIsSelected: itemIsExcluded } = useMultiSelection(
     tags ?? [],
     exclusion ?? [],
     (s) => onExclusionChange && onExclusionChange(s),
@@ -47,6 +53,14 @@ export function TagSelector({
 
   const [filter, setFilter] = useState<string>()
 
+  const explicitlyExcludedTags = exclusion?.filter((t) => !t.excludeByDefault)
+  const includedExclusionTags = tags?.filter(
+    (t) =>
+      t.excludeByDefault &&
+      !exclusion?.some((e) => e.id == t.id) &&
+      !selection?.some((s) => s.id == t.id)
+  )
+
   if (groups?.length === 0) {
     return <EmptyTagGroups />
   }
@@ -55,6 +69,7 @@ export function TagSelector({
     <Stack height="100%" gap={2} justifyContent="space-between">
       <Stack
         gap={1}
+        p={1}
         sx={{
           '& .MuiButton-root': {
             opacity: 0,
@@ -85,15 +100,15 @@ export function TagSelector({
           collapsedGroups={collapsedGroups}
           onToggleCollapse={toggleGroupCollapse}
           onSelect={(t) => {
-            selectItem(t)
+            toggleSelection(t)
             if (itemIsExcluded(t)) {
-              excludeItem(t)
+              toggleExclusion(t)
             }
           }}
           onExclude={(t) => {
-            excludeItem(t)
+            toggleExclusion(t)
             if (itemIsSelected(t)) {
-              selectItem(t)
+              toggleSelection(t)
             }
           }}
         />
@@ -116,21 +131,25 @@ export function TagSelector({
           )}
         />
       </Stack>
-      {((selection?.length ?? 0) > 0 || (exclusion?.length ?? 0) > 0) && (
-        <Box position={'sticky'} bgcolor="background.paper" bottom={0} pb={2}>
-          <Divider />
-          <TagSelection
-            selection={selection}
-            exclusion={exclusion}
-            onDeselect={selectItem}
-            onInclude={excludeItem}
-            onClear={() => {
-              onSelectionChange && onSelectionChange([])
-              onExclusionChange && onExclusionChange([])
-            }}
-          />
-        </Box>
-      )}
+      {anyHaveValue(selection, explicitlyExcludedTags, includedExclusionTags) &&
+        !hideSelectionPanel && (
+          <Box position={'sticky'} bgcolor="background.paper" bottom={0} pb={2} px={1} zIndex={2}>
+            <Divider />
+            <TagSelection
+              selection={selection}
+              exclusion={explicitlyExcludedTags}
+              includedExclusions={includedExclusionTags}
+              onClickSelected={toggleSelection}
+              onClickExcluded={toggleExclusion}
+              onClickIncludedExclusion={toggleExclusion}
+              onClear={() => {
+                onSelectionChange && onSelectionChange([])
+                onExclusionChange &&
+                  onExclusionChange(tags?.filter((t) => t.excludeByDefault) ?? [])
+              }}
+            />
+          </Box>
+        )}
     </Stack>
   )
 }

@@ -9,6 +9,9 @@ interface Config {
   'window.maximized': boolean
   previousVersion: string
   autoUpdatingEnabled: boolean
+  applyTagsOnSourceAssociation: boolean
+  showPatchNotesOnUpdate: boolean
+  taggableTagOrder: 'alphabetical' | 'sideBar'
 }
 
 const schema: Schema<Config> = {
@@ -20,6 +23,15 @@ const schema: Schema<Config> = {
   previousVersion: {},
   autoUpdatingEnabled: {
     default: true
+  },
+  applyTagsOnSourceAssociation: {
+    default: true
+  },
+  showPatchNotesOnUpdate: {
+    default: true
+  },
+  taggableTagOrder: {
+    default: 'sideBar'
   }
 }
 

@@ -14,6 +14,7 @@ import CancelIcon from '@mui/icons-material/CancelRounded'
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutlineRounded'
 import AddLinkIcon from '@mui/icons-material/AddLinkRounded'
 import { isTaggableImage, isTaggableStack } from '@renderer/Common/taggable'
+import LinkOffIcon from '@mui/icons-material/LinkOff'
 
 export interface TaggableGridEvents {
   onAssociateWithSource?: (taggables: Impart.TaggableImage[]) => void
@@ -40,6 +41,7 @@ export function useTaggableContextMenuOptions(
   const confirm = useConfirmationDialog()
   const { callIpc: removeStack } = useImpartIpcCall(window.stackApi.remove, [])
   const { callIpc: setCover } = useImpartIpcCall(window.stackApi.setCover, [])
+  const { callIpc: detachSourceFile } = useImpartIpcCall(window.taggableApi.detachSourceFile, [])
 
   const { reload, stackTrail } = useTaggables()
 
@@ -142,6 +144,34 @@ export function useTaggableContextMenuOptions(
         )
     },
     'divider',
+    {
+      icon: <LinkOffIcon />,
+      label: 'Detach Source File',
+      hide:
+        selection.some((s) => !isTaggableImage(s)) ||
+        selection.filter(isTaggableImage).every((s) => s.source == null),
+      onClick: async () => {
+        const imagesWithSource = selection.filter(isTaggableImage).filter((s) => s.source != null)
+
+        if (imagesWithSource.length == 1) {
+          await detachSourceFile([imagesWithSource[0].id])
+          reload()
+        } else {
+          confirm(
+            {
+              title: 'Detach Source Files?',
+              body: `This will detach the source files from ${imagesWithSource.length} images`,
+              confirmIcon: <LinkOffIcon />,
+              confirmText: 'Unlink'
+            },
+            async () => {
+              await detachSourceFile(selection.filter(isTaggableImage).map((s) => s.id))
+              reload()
+            }
+          )
+        }
+      }
+    },
     {
       icon: <HideImageIcon />,
       label: 'Hide',

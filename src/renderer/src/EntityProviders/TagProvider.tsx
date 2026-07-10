@@ -1,11 +1,12 @@
 import { createContext, useContext, useMemo } from 'react'
 import { useImpartIpcData } from '@renderer/Common/Hooks/useImpartIpc'
+import { CircularProgress } from '@mui/material'
 
 interface TagData {
   groups?: Impart.TagGroup[]
   tags?: Impart.Tag[]
   isLoading: boolean
-  reload: () => void
+  reload: () => Promise<void>
 }
 
 const TagContext = createContext<TagData | null>(null)

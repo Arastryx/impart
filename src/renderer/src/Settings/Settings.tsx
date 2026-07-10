@@ -10,8 +10,10 @@ import InfoIcon from '@mui/icons-material/InfoRounded'
 import { About } from './About/About'
 import { Updates } from './Updates'
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt'
+import { Tagging } from './Tagging'
+import LabelIcon from '@mui/icons-material/Label'
 
-type SettingsType = 'updates' | 'directories' | 'hiddenItems' | 'about'
+type SettingsType = 'updates' | 'directories' | 'hiddenItems' | 'about' | 'tagging'
 
 export interface SettingsProps {
   onClose?: () => void
@@ -20,10 +22,6 @@ export interface SettingsProps {
 
 export function Settings({ onClose, onShowPatchNotes }: SettingsProps) {
   const [selectedTab, setSelectedTab] = useState<SettingsType>('directories')
-
-  const { isTaskRunning } = useTaskStatus()
-
-  const test = false
 
   return (
     <Stack height="100%" justifyContent="center">
@@ -51,9 +49,12 @@ export function Settings({ onClose, onShowPatchNotes }: SettingsProps) {
                 sx={{
                   marginRight: '-2px'
                 }}
-                TabIndicatorProps={{ sx: (theme) => ({ bgcolor: theme.palette.background.paper }) }}
+                slotProps={{
+                  indicator: { sx: (theme) => ({ bgcolor: theme.palette.background.paper }) }
+                }}
               >
                 <Tab label="Directories" value="directories" icon={<FolderIcon />} />
+                <Tab label="Tagging" value="tagging" icon={<LabelIcon />} />
                 <Tab label="Hidden Items" value="hiddenItems" icon={<HideImageIcon />} />
                 <Tab label="Updates" value="updates" icon={<SystemUpdateAltIcon />} />
                 <Tab label="About" value="about" icon={<InfoIcon />} />
@@ -61,6 +62,7 @@ export function Settings({ onClose, onShowPatchNotes }: SettingsProps) {
             </Stack>
             <Box flex={1} p={1} pr={8} height="100%" sx={{ overflowY: 'scroll' }}>
               {selectedTab === 'directories' && <IndexedDirectoriesSettings />}
+              {selectedTab === 'tagging' && <Tagging />}
               {selectedTab === 'hiddenItems' && <HiddenItems />}
               {selectedTab === 'updates' && <Updates onShowPatchNotes={onShowPatchNotes} />}
               {selectedTab === 'about' && <About />}

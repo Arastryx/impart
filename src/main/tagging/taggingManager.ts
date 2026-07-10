@@ -6,6 +6,8 @@ import { taskQueue } from '../task/taskQueue'
 import { TaggableImage } from '../database/entities/TaggableImage'
 import { TaggableFile } from '../database/entities/TaggableFile'
 import { ImpartTask, TaskType } from '../task/impartTask'
+import logger from 'electron-log'
+import { isTaggableStack } from '../database/entities/TaggableStack'
 
 export namespace TaggingManager {
   export async function setFileTags(taggableId: number, tagIds: number[]) {
@@ -18,8 +20,12 @@ export namespace TaggingManager {
       throw new Error(`Could not find taggable with id ${taggableId}`)
     }
 
+    const beforeTags = file.tags
+
     file.tags = tags
     await file.save()
+
+    logTagChange(beforeTags, tags, file)
   }
 
   export async function bulkTag(taggableIds: number[], tagIds: number[]) {
@@ -40,18 +46,46 @@ export namespace TaggingManager {
   }
 
   async function addTagsToTaggable(taggable: Taggable, tags: Tag[]) {
-    let added = false
+    const addedTags: Tag[] = []
 
     tags.forEach((addedTag) => {
       if (!taggable.tags.some((existingTag) => existingTag.id === addedTag.id)) {
-        added = true
+        addedTags.push(addedTag)
         taggable.tags.push(addedTag)
       }
     })
 
-    if (added) {
+    if (addedTags.length > 0) {
       await taggable.save()
+      logTagChange([], addedTags, taggable)
     }
+  }
+
+  function logTagChange(before: Tag[], after: Tag[], taggable: Taggable) {
+    const removedTags = before.filter((b) => !after.some((a) => a.id == b.id))
+    const addedTags = after.filter((a) => !before.some((b) => a.id == b.id))
+
+    const taggableName = isTaggableStack(taggable)
+      ? taggable.name
+      : (taggable as TaggableFile | TaggableImage).fileIndex.fileName
+
+    if (removedTags.length > 0) {
+      if (addedTags.length > 0) {
+        logger.info(
+          `Removed ${tagArrayToString(removedTags)} and added ${tagArrayToString(addedTags)} to ${taggableName}`
+        )
+      } else {
+        logger.info(`Removed ${tagArrayToString(removedTags)} from ${taggableName}`)
+      }
+    } else if (addedTags.length > 0) {
+      logger.info(`Added ${tagArrayToString(addedTags)} to ${taggableName}`)
+    }
+  }
+
+  function tagArrayToString(tags: Tag[]) {
+    return tags.length == 1
+      ? `"${tags[0].label ?? 'Unnamed'}"`
+      : `${tags.length} tags (${tags.map((t) => t.label ?? 'Unnamed Tag').join(', ')})`
   }
 
   abstract class BaseBulkTagTask extends ImpartTask<Taggable> {

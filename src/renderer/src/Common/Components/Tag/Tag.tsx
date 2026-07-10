@@ -59,12 +59,34 @@ export function Tag({ tag, selected, editable, onSelect, onExclude, size, exclud
                 await window.tagApi.editTag(tag.id, {
                   color: tag.color,
                   label: tag.label,
-                  isPrivate: !tag.isPrivate
+                  isPrivate: !tag.isPrivate,
+                  excludeByDefault: tag.excludeByDefault
                 })
 
                 reload()
               }
             },
+            {
+              label: 'Exclude by Default',
+              isChecked: tag.excludeByDefault,
+              onClick: async () => {
+                const isExcluding = !tag.excludeByDefault
+
+                await window.tagApi.editTag(tag.id, {
+                  color: tag.color,
+                  label: tag.label,
+                  isPrivate: tag.isPrivate,
+                  excludeByDefault: !tag.excludeByDefault
+                })
+
+                await reload()
+
+                if (isExcluding != excluded) {
+                  onExclude?.()
+                }
+              }
+            },
+            'divider',
             {
               icon: <DeleteIcon />,
               label: 'Delete',
@@ -81,7 +103,7 @@ export function Tag({ tag, selected, editable, onSelect, onExclude, size, exclud
                 <Box
                   width="calc(100% + 10px)"
                   height={3}
-                  bgcolor={tag.color}
+                  bgcolor={tag.color ?? theme.palette.primary.main}
                   sx={{ opacity: excluded ? 0.6 : 0, transition: '0.2s' }}
                 ></Box>
               }

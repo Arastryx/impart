@@ -13,11 +13,23 @@ import { setupStackApi } from './api/stackApi'
 import { ThumbnailManager } from './indexables/thumbnailManager'
 import { store } from './config'
 import { autoUpdater } from 'electron-updater'
-import electronLog from 'electron-log'
 import { setupCommonApi } from './api/commonApi'
+import { initLogging } from './initLogging'
 
-electronLog.transports.file.level = 'info'
-autoUpdater.logger = electronLog
+const isDev = !app.isPackaged
+
+async function installDevtron() {
+  const { devtron } = await import('@electron/devtron')
+  await devtron.install()
+}
+
+if (isDev) {
+  installDevtron().catch((error) => {
+    console.error('Failed to install Devtron:', error)
+  })
+}
+
+initLogging()
 
 if (store.get('autoUpdatingEnabled')) {
   autoUpdater.checkForUpdatesAndNotify()

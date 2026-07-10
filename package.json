@@ -1,6 +1,6 @@
 {
   "name": "impart",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Tag-based art organization app",
   "main": "./out/main/index.js",
   "author": "github.com/Arastryx",
@@ -15,7 +15,7 @@
     "typewatch:node": "tsc --noEmit -w -p tsconfig.node.json --composite false",
     "typewatch:web": "tsc --noEmit -w -p tsconfig.web.json --composite false",
     "start": "electron-vite preview",
-    "dev": "electron-vite dev",
+    "dev": "electron-vite dev --watch",
     "build": "npm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "npm run build && electron-builder --dir",
@@ -36,7 +36,7 @@
     "@mui/icons-material": "^7.3.5",
     "@mui/material": "^7.3.5",
     "animate.css": "^4.1.1",
-    "better-sqlite3": "^12.4.1",
+    "better-sqlite3": "^12.11.1",
     "dayjs": "^1.11.19",
     "electron-log": "^5.4.3",
     "electron-store": "^8.2.0",
@@ -51,13 +51,14 @@
     "react-virtuoso": "^4.14.1",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.27",
-    "uuid": "^13.0.0",
+    "uuid": "^13.0.2",
     "vite-plugin-package-version": "^1.1.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^3.0.0",
     "@electron-toolkit/eslint-config-ts": "^3.1.0",
     "@electron-toolkit/tsconfig": "^2.0.0",
+    "@electron/devtron": "^2.1.1",
     "@swc/core": "^1.15.2",
     "@types/array-move": "^1.0.0",
     "@types/node": "^22.18.6",
@@ -65,7 +66,7 @@
     "@types/react-dom": "^19.1.9",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^5.0.3",
-    "electron": "^38.1.2",
+    "electron": "^39.8.10",
     "electron-builder": "^26.0.12",
     "electron-vite": "^4.0.1",
     "eslint": "^9.36.0",
@@ -75,7 +76,7 @@
     "prettier": "^3.6.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "typescript": "^5.9.2",
+    "typescript": "^7.0.2",
     "vite": "^7.1.6"
   },
   "build": {
@@ -101,6 +102,9 @@
         }
       ]
     },
+    "nsis": {
+      "deleteAppDataOnUninstall": true
+    },
     "linux": {
       "category": "Graphics",
       "publish": [
@@ -112,5 +116,14 @@
         }
       ]
     }
+  },
+  "allowScripts": {
+    "better-sqlite3@12.11.1": true,
+    "@swc/core@1.15.2": true,
+    "electron@39.8.10": true,
+    "electron-winstaller@5.4.0": true,
+    "esbuild@0.25.12": true,
+    "esbuild@0.28.1": true
   }
 }
+

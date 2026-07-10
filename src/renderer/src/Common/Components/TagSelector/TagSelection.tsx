@@ -1,22 +1,25 @@
 import { Box, Stack, Typography, Button, Grid, Divider } from '@mui/material'
-import React from 'react'
 import { Tag } from '../Tag/Tag'
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOffRounded'
 
 export interface TagSelectionProps {
   selection?: Impart.Tag[]
   exclusion?: Impart.Tag[]
-  onDeselect?: (tag: Impart.Tag) => void
-  onInclude?: (tag: Impart.Tag) => void
+  includedExclusions?: Impart.Tag[]
+  onClickSelected?: (tag: Impart.Tag) => void
+  onClickExcluded?: (tag: Impart.Tag) => void
+  onClickIncludedExclusion?: (tag: Impart.Tag) => void
   onClear?: () => void
 }
 
 export function TagSelection({
   selection,
   exclusion,
+  includedExclusions,
   onClear,
-  onDeselect,
-  onInclude
+  onClickSelected,
+  onClickExcluded,
+  onClickIncludedExclusion
 }: TagSelectionProps) {
   return (
     <Stack pt={1} gap={1}>
@@ -26,25 +29,59 @@ export function TagSelection({
           Clear all
         </Button>
       </Stack>
-      {selection && selection.length > 0 && (
-        <Grid container spacing={2}>
-          {selection.map((t) => (
-            <Grid key={t.id}>
-              <Tag tag={t} onSelect={() => onDeselect && onDeselect(t)} />
+      <Stack
+        direction="row"
+        flexWrap={'wrap'}
+        justifyContent={'space-around'}
+        rowGap={1}
+        columnGap={4}
+      >
+        {selection && selection.length > 0 && (
+          <Box minWidth={110}>
+            <Divider variant="middle" sx={{ mx: 0 }}>
+              <Typography variant="caption">Selected</Typography>
+            </Divider>
+            <Grid container spacing={2} justifyContent={'center'}>
+              {selection.map((t) => (
+                <Grid key={t.id}>
+                  <Tag tag={t} onSelect={() => onClickSelected && onClickSelected(t)} />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      )}
-      {selection && selection.length > 0 && exclusion && exclusion.length > 0 && <Divider />}
-      {exclusion && exclusion.length > 0 && (
-        <Grid container spacing={2}>
-          {exclusion?.map((t) => (
-            <Grid key={t.id}>
-              <Tag tag={t} excluded onSelect={() => onInclude && onInclude(t)} />
+          </Box>
+        )}
+        {exclusion && exclusion.length > 0 && (
+          <Box minWidth={110}>
+            <Divider variant="middle" sx={{ mx: 0 }}>
+              <Typography variant="caption">Excluded</Typography>
+            </Divider>
+            <Grid container spacing={2} justifyContent={'center'}>
+              {exclusion?.map((t) => (
+                <Grid key={t.id}>
+                  <Tag tag={t} excluded onSelect={() => onClickExcluded && onClickExcluded(t)} />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      )}
+          </Box>
+        )}
+        {includedExclusions && includedExclusions.length > 0 && (
+          <Box minWidth={110}>
+            <Divider variant="middle" sx={{ mx: 0 }}>
+              <Typography variant="caption">Included</Typography>
+            </Divider>
+            <Grid container spacing={2} justifyContent={'center'}>
+              {includedExclusions?.map((t) => (
+                <Grid key={t.id}>
+                  <Tag
+                    tag={t}
+                    onSelect={() => onClickIncludedExclusion && onClickIncludedExclusion(t)}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        )}
+      </Stack>
     </Stack>
   )
 }

@@ -36,14 +36,16 @@ contextBridge.exposeInMainWorld('taskApi', {
   onStepTaken: generateCallback('task/stepTaken'),
   onErrorThrown: generateCallback('task/errorThrown'),
   onTaskFinished: generateCallback('task/taskFinished'),
-  onSequenceFinished: generateCallback('task/sequenceFinished')
+  onSequenceFinished: generateCallback('task/sequenceFinished'),
+  onSequenceCancelled: generateCallback('task/sequenceCancelled')
 })
 
 contextBridge.exposeInMainWorld('taggableApi', {
   getTaggables: generateEndpoint('taggable/getTaggables'),
   getAllTaggableYears: generateEndpoint('taggable/getAllTaggableYears'),
   setHidden: generateEndpoint('taggable/setHidden'),
-  associateImageWithFile: generateEndpoint('taggable/associateImageWithFile')
+  associateImageWithFile: generateEndpoint('taggable/associateImageWithFile'),
+  detachSourceFile: generateEndpoint('taggable/detachSourceFile')
 })
 
 contextBridge.exposeInMainWorld('stackApi', {
@@ -77,7 +79,8 @@ contextBridge.exposeInMainWorld('indexApi', {
   selectDirectory: generateEndpoint('index/selectDirectory'),
   updateDirectories: generateEndpoint('index/updateDirectories'),
   calculateTotalIndexChanges: generateEndpoint('index/calculateTotalIndexChanges'),
-  getDirectories: generateEndpoint('index/getDirectories')
+  getDirectories: generateEndpoint('index/getDirectories'),
+  cancelTasks: generateEndpoint('index/cancelTasks')
 })
 
 contextBridge.exposeInMainWorld('thumbnailApi', {

@@ -1,10 +1,12 @@
+import logger from 'electron-log'
+
 export interface ImpartError {
   message: string
   stack?: string
   name?: string
 }
 
-export async function handleError<T>(func: () => Promise<T>): Promise<T | ImpartError> {
+export async function handleError<T>(func: () => T | Promise<T>): Promise<T | ImpartError> {
   try {
     return await func()
   } catch (e) {
@@ -22,7 +24,7 @@ export async function handleError<T>(func: () => Promise<T>): Promise<T | Impart
       }
     }
 
-    console.error(e)
+    logger.error(e)
     return error
   }
 }

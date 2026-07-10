@@ -1,6 +1,8 @@
 import { arrayMoveImmutable } from '../common/arrayMove'
+import { AppDataSource } from '../database/database'
 import { Tag } from '../database/entities/Tag'
 import { TagGroup } from '../database/entities/TagGroup'
+import logger from 'electron-log'
 
 export namespace TagManager {
   export async function getTagGroups() {
@@ -21,6 +23,8 @@ export namespace TagManager {
     })
     await group.save()
 
+    logger.info('Created new tag group')
+
     return group
   }
 
@@ -31,6 +35,8 @@ export namespace TagManager {
     groupEntity.defaultTagColor = defaultTagColor
 
     await groupEntity.save()
+
+    logger.info(`Edited tag group "${label ?? 'Unnamed Group'}"`)
 
     return groupEntity
   }
@@ -68,11 +74,20 @@ export namespace TagManager {
         await group.save()
       })
     )
+
+    logger.info('Reordered tag groups')
   }
 
   export async function deleteGroup(id: number) {
     const groupEntity = await TagGroup.findOneByOrFail({ id })
-    await groupEntity.remove()
+
+    await AppDataSource.transaction(async (manager) => {
+      await Promise.all(groupEntity.tags.map((t) => manager.remove(t)))
+      await manager.remove(groupEntity)
+    })
+
+    logger.info(`Deleted tag group "${groupEntity.label ?? 'Unnamed Group'}"`)
+
     return true
   }
 
@@ -94,6 +109,8 @@ export namespace TagManager {
 
     await tag.save()
 
+    logger.info(`Created new tag in the "${tagGroup.label}" group`)
+
     return tag
   }
 
@@ -101,16 +118,23 @@ export namespace TagManager {
     label?: string
     color?: string
     isPrivate: boolean
+    excludeByDefault: boolean
   }
 
-  export async function editTag(tagId: number, { label, color, isPrivate }: TagModel) {
+  export async function editTag(
+    tagId: number,
+    { label, color, isPrivate, excludeByDefault }: TagModel
+  ) {
     const tagEntity = await Tag.findOneByOrFail({ id: tagId })
 
     tagEntity.label = label
     tagEntity.color = color
     tagEntity.isPrivate = isPrivate
+    tagEntity.excludeByDefault = excludeByDefault
 
     await tagEntity.save()
+
+    logger.info(`Updated "${tagEntity.label ?? 'Unnamed Tag'}" tag`)
 
     return tagEntity
   }
@@ -132,6 +156,8 @@ export namespace TagManager {
     if (oldGroup.id != nextGroup.id) {
       await rejigTagOrder(oldGroup.id)
     }
+
+    logger.info('Reordered tags')
   }
 
   async function insertTagIntoGroup(tag: Tag, group: TagGroup, beforeId: number | 'end') {
@@ -193,6 +219,8 @@ export namespace TagManager {
   export async function deleteTag(id: number) {
     const tagEntity = await Tag.findOneByOrFail({ id })
     await tagEntity.remove()
+
+    logger.info(`Deleted "${tagEntity.label ?? 'Unnamed Tag'}" tag`)
     return true
   }
 }
