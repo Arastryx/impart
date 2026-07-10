@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Patch1_2_0 } from './Patches/Patch1_2_0'
 import { PatchOld } from './Patches/PatchOld'
 import { ToggleSetting } from '@renderer/Settings/ToggleSetting'
+import { Patch1_3_0 } from './Patches/Patch1_3_0'
 
 export interface PatchNotesProps {
   show: boolean
@@ -21,6 +22,7 @@ export function PatchNotes({ show, onClose }: PatchNotesProps) {
       </DialogTitle>
       <DialogContent>
         <Stack gap={5} divider={<Divider />}>
+          <Patch1_3_0 />
           <Patch1_2_0 />
           <PatchOld />
         </Stack>
