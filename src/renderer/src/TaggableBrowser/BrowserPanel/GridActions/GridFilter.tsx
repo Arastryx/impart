@@ -20,6 +20,8 @@ function getSourceFilterLabel(filter: Impart.SourceFileFilter) {
       return 'Only Unassociated Non-Image Files'
     case 'none':
       return 'Excluding Non-Image Files'
+    case 'onlyUntagged':
+      return 'Only Untagged Files'
   }
 
   return 'Unkonwn Non-Image File Filter'

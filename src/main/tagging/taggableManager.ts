@@ -4,7 +4,7 @@ import { TaggableImage } from '../database/entities/TaggableImage'
 import { TaggableFile } from '../database/entities/TaggableFile'
 import { store } from '../config'
 
-type SourceFileFilter = 'only' | 'all' | 'unassociated' | 'onlyUnassociated' | 'none'
+type SourceFileFilter = 'only' | 'all' | 'unassociated' | 'onlyUnassociated' | 'onlyUntagged' | 'none'
 
 export interface FetchTaggablesOptions {
   tagIds?: number[]
@@ -65,6 +65,20 @@ export namespace TaggableManager {
             FROM taggable
             INNER JOIN taggable_tags_tag AS relation ON taggable.id = relation.taggableId
             INNER JOIN tag ON relation.tagId = tag.id AND tag.isPrivate = 1)`
+      )
+    }
+
+    if (options?.sourceFiles == 'onlyUntagged'){
+      // I am working in a gallery with 1k pieces and it works fine, but if it is proving to be an issue, 
+      // I suggest adding a new column to taggables called "isTagged" that is updated on an event basis. --Mr.B
+      query.andWhere( 
+        `(SELECT COUNT(*) from  
+            (SELECT Record.tagId 
+              FROM taggable_tags_tag AS Record 
+              WHERE files.id = Record.taggableId
+            )
+          ) <= 0
+        `
       )
     }
 

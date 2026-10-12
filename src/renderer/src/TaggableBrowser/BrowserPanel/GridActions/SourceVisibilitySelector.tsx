@@ -1,10 +1,10 @@
 import { MenuItem, TextField } from '@mui/material'
 import { useTaggables } from '@renderer/EntityProviders/TaggableProvider'
-import React from 'react'
 
-export interface SourceVisibilitySelectorProps {}
 
-export function SourceVisibilitySelector({}: SourceVisibilitySelectorProps) {
+export interface SourceVisibilitySelectorProps { }
+
+export function SourceVisibilitySelector({ }: SourceVisibilitySelectorProps) {
   const { fetchOptions, setFetchOptions } = useTaggables()
 
   return (
@@ -19,6 +19,7 @@ export function SourceVisibilitySelector({}: SourceVisibilitySelectorProps) {
       <MenuItem value="unassociated">Exclude associated files</MenuItem>
       <MenuItem value="only">Only show files</MenuItem>
       <MenuItem value="onlyUnassociated">Only show unassociated files</MenuItem>
+      <MenuItem value="onlyUntagged">Only show untagged</MenuItem>
       <MenuItem value="none">Only show images</MenuItem>
     </TextField>
   )

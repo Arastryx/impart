@@ -61,7 +61,7 @@ declare global {
 
     type Taggable = TaggableImage | TaggableFile | TaggableStack
 
-    type SourceFileFilter = 'only' | 'all' | 'unassociated' | 'onlyUnassociated' | 'none'
+    type SourceFileFilter = 'only' | 'all' | 'unassociated' | 'onlyUnassociated' | 'onlyUntagged' | 'none'
 
     interface FetchTaggablesOptions {
       tagIds?: number[]

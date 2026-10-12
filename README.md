@@ -25,6 +25,7 @@ Impart is built on electron-vite using typescript react. As such, it can also be
 
 - Node v22.19.0 or greater **including Tools for Native Modules**
   - If you have node but haven't installed native tools, you can refer to [this guide here](https://github.com/nodejs/node-gyp#on-windows) on how to set them up
+- It is not recommended to use WSL for Windows development since Electron does not play nice with that setup.  It is easier at this time to run everything natively.
 
 ### Running the app
 
